@@ -13,27 +13,29 @@ class LoginView
     private static $keep = 'LoginView::KeepMeLoggedIn';
     private static $messageId = 'LoginView::Message';
 
-    /**
-     * Create HTTP response
-     *
-     * Should be called after a login attempt has been determined
-     *
-     * @return  void BUT writes to standard output and cookies!
-     */
+    private $message;
+    private $session;
+
+    public function __construct($session)
+    {
+        $this->session = $session;
+    }
+
     public function response()
     {
-        $message = '';
 
-        $response = $this->generateLoginFormHTML($message);
-        //$response .= $this->generateLogoutButtonHTML($message);
+        $this->message = $this->showResponseMessage();
+
+        if ($this->session->checkIfLoggedIn()) {
+            $response = $this->generateLogoutButtonHTML($message);
+        } else {
+            $response = $this->generateLoginFormHTML($this->message);
+
+        }
+
         return $response;
     }
 
-    /**
-     * Generate HTML code on the output buffer for the logout button
-     * @param $message, String output message
-     * @return  void, BUT writes to standard output!
-     */
     private function generateLogoutButtonHTML($message)
     {
         return '
@@ -44,11 +46,6 @@ class LoginView
 		';
     }
 
-    /**
-     * Generate HTML code on the output buffer for the logout button
-     * @param $message, String output message
-     * @return  void, BUT writes to standard output!
-     */
     private function generateLoginFormHTML($message)
     {
         return '
@@ -70,36 +67,64 @@ class LoginView
 				</fieldset>
 			</form>
 		';
-	}
-	
-	public function isLogOutButtonPressed()
+    }
+
+    private function showResponseMessage()
+    {
+        $this->message = '';
+
+        if (empty($this->getRequestUserName())) {
+            return $this->message .= 'Username is missing';
+        } elseif (strlen($this->getRequestUserName()) < 3) {
+            return $this->message .= 'Username has too few characters, at least 3 characters.';
+        } elseif (empty($this->getRequestUserPassword())) {
+            return $this->message .= 'Password is missing';
+        } elseif (strlen($this->getRequestUserPassword()) < 6) {
+            return $this->message .= 'Password has too few characters, at least 6 characters.';
+        } else {
+            return $this->message;
+        }
+    }
+
+    private function setUserCredentialsToValid(): bool
+    {
+        if ($this->isLogInButtonPressed() && $this->message === '') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function isUserCredentialsValid(): bool
+    {
+        if ($this->setUserCredentialsToValid()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function isLogOutButtonPressed(): bool
     {
         return isset($_REQUEST[self::$logout]);
-	}
-	
-	public function isLogInButtonPressed()
+    }
+
+    public function isLogInButtonPressed(): bool
     {
         return isset($_REQUEST[self::$login]);
     }
 
     public function getRequestUserName()
     {
-        $name = self::$name;
-        if (isset($_POST[$name])) {
-            return $_REQUEST[$name];
-        } else {
-            return "";
+        if (isset($_POST[self::$name])) {
+            return $_POST[self::$name];
         }
     }
 
-    private function getRequestUserPassword()
+    public function getRequestUserPassword()
     {
-        $password = self::$password;
-        if (isset($_POST[$password])) {
-            return $_POST[$password];
-        } else {
-            return "";
+        if (isset($_POST[self::$password])) {
+            return $_POST[self::$password];
         }
-	}
-	
+    }
 }

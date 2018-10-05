@@ -8,27 +8,34 @@ class LoginController
     private $loginModel;
     private $session;
 
-    public function __construct($logInView, $loginModel,$session)
+    public function __construct($logInView, $loginModel, $session)
     {
         $this->logInView = $logInView;
         $this->loginModel = $loginModel;
         $this->session = $session;
     }
 
-
-    public function tryLogIn()
+    public function checkIfUserWantToLogin()
     {
-        if ($this->logInView->isLogInButtonPressed() && $this->logInView->isUserCredentialsValid()) {
-            $this->loginModel->Login($this->logInView->getRequestUserName(), $this->logInView->getRequestUserPassword());
+        if ($this->logInView->isLogInButtonPressed()) {
+            $this->newLoginAttemp();
         }
     }
 
-    public function isLoggedIn(){
-        return $this->session->checkIfLoggedIn();
+    public function checkIfUserWantToLogOut()
+    {
+        if ($this->logInView->isLogOutButtonPressed()) {
+            $this->logutUser();
+        }
     }
 
+    private function newLoginAttemp()
+    {
+            $this->loginModel->login($this->logInView->getRequestUserName(), $this->logInView->getRequestUserPassword());  
+    }
 
-    public function userWantToLogout(){
-            $this->session->logOutUser();
+    private function logutUser()
+    {
+        $this->session->logoutUser();
     }
 }

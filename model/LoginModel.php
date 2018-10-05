@@ -13,7 +13,7 @@ class LoginModel
         $this->session = $session;
     }
 
-    public function Login($username, $password)
+    public function login($username, $password)
     {
         $this->db->query('SELECT * FROM users WHERE user_username = :user_username');
         $this->db->bind(':user_username', $username);
@@ -26,17 +26,12 @@ class LoginModel
             // om hasat lösen passar med inskriva lösen,
             if (password_verify($password, $hashed_password)) {
 
-                $this->session->setToLoggedIn(true);
+            $this->session->setToLoggedIn(true);
 
-                // $this->lgController->GetErrorMessageFromDB($this->Err->loginAttempSuccessful());
-                // $this->lgController->setUserSession();
+
             } else {
-                echo 'wrong password or username';
-                // $this->lgController->GetErrorMessageFromDB($this->Err->incorrectCredentials());
             }
         } else {
-            echo 'user do not exist';
-            // return $this->lgController->GetErrorMessageFromDB($this->Err->userNameDoesNotExist());
         }
     }
 }

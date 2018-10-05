@@ -5,11 +5,16 @@ namespace view;
 class LayoutView
 {
 
+    private $session;
 
-    public function render($isLoggedIn,LoginView $v, DateTimeView $dtv)
+    public function __construct($sessionController)
     {
+        $this->session = $sessionController;
+    }
 
-
+    public function render(LoginView $v, DateTimeView $dtv)
+    {
+        
         echo '<!DOCTYPE html>
       <html>
         <head>
@@ -18,21 +23,21 @@ class LayoutView
         </head>
         <body>
           <h1>Assignment 2</h1>
-          ' . $this->renderIsLoggedIn($isLoggedIn) . '
+          ' . $this->renderIsLoggedIn() . '
 
           <div class="container">
               ' . $v->response() . '
 
-              ' . $dtv->show() . '
+              ' . $dtv->showTime() . '
           </div>
          </body>
       </html>
     ';
     }
 
-    private function renderIsLoggedIn($isLoggedIn)
+    private function renderIsLoggedIn()
     {
-        if ($isLoggedIn) {
+        if ($this->session->checkIfLoggedIn()) {
             return '<h2>Logged in</h2>';
         } else {
             return '<h2>Not logged in</h2>';

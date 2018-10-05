@@ -24,13 +24,16 @@ class LoginView
     public function response()
     {
 
-        $this->message = $this->showResponseMessage();
+        $message = '';
+
+        if ($this->isLogInButtonPressed()) {
+            $message = $this->showResponseMessage();
+        }
 
         if ($this->session->checkIfLoggedIn()) {
             $response = $this->generateLogoutButtonHTML($message);
         } else {
-            $response = $this->generateLoginFormHTML($this->message);
-
+            $response = $this->generateLoginFormHTML($message);
         }
 
         return $response;
@@ -55,7 +58,7 @@ class LoginView
 					<p id="' . self::$messageId . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getRequestUserName() . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -71,38 +74,36 @@ class LoginView
 
     private function showResponseMessage()
     {
-        $this->message = '';
+        $message = '';
 
         if (empty($this->getRequestUserName())) {
-            return $this->message .= 'Username is missing';
+            return $message .= 'Username is missing';
         } elseif (strlen($this->getRequestUserName()) < 3) {
-            return $this->message .= 'Username has too few characters, at least 3 characters.';
+            return $message .= 'Username has too few characters, at least 3 characters.';
         } elseif (empty($this->getRequestUserPassword())) {
-            return $this->message .= 'Password is missing';
+            return $message .= 'Password is missing';
         } elseif (strlen($this->getRequestUserPassword()) < 6) {
-            return $this->message .= 'Password has too few characters, at least 6 characters.';
+            return $message .= 'Password has too few characters, at least 6 characters.';
+        } elseif ($this->session->checkIfLoggedIn()) {
+            return $message .= 'Welcome';
         } else {
-            return $this->message;
+            return $message;
         }
     }
 
-    private function setUserCredentialsToValid(): bool
-    {
-        if ($this->isLogInButtonPressed() && $this->message === '') {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    // private function setUserCredentialsToValid(): bool
+    // {
+    //     if ($this->isLogInButtonPressed() && $this->message === '') {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
-    public function isUserCredentialsValid(): bool
-    {
-        if ($this->setUserCredentialsToValid()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    // public function isUserCredentialsValid(): bool
+    // {
+    //     return true;
+    // }
 
     public function isLogOutButtonPressed(): bool
     {

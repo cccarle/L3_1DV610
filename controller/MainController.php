@@ -16,6 +16,7 @@ class MainController
         \view\DateTimeView $DateTimeView,
         \controller\LoginController $loginController,
         \controller\SessionController $sessionController
+
     ) {
         $this->loginController = $loginController;
         $this->loginView = $loginView;
@@ -26,20 +27,13 @@ class MainController
 
     public function render()
     {
+
+        $this->loginController->checkIfUserWantToLogin();
+        $this->loginController->checkIfUserWantToLogOut();
+
         $this->layoutView->render(
-            $this->sessionController->checkIfLoggedIn(),
             $this->loginView,
             $this->dateTimeView
         );
-
-        if ($this->loginView->isLogInButtonPressed()) {
-            $this->loginController->tryLogIn();
-            $this->loginController->isLoggedIn();
-        }
-
-        if ($this->loginView->isLogOutButtonPressed()) {
-            $this->loginController->userWantToLogout();
-        }
-
     }
 }

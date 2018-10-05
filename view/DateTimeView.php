@@ -2,14 +2,22 @@
 
 namespace view;
 
-class DateTimeView
-{
+class DateTimeView {
 
-    public function show()
-    {
+    private $timeModel;
 
-        $timeString = 'TODO, Write servertime here...';
-
-        return '<p>' . $timeString . '</p>';
+    public function __construct($timeModel){
+        $this->timeModel = $timeModel;
     }
+
+	/* 
+	Returns a string with time from server.
+	*/
+	
+	public function showTime() {
+
+        $timeString =  $this->timeModel->getTime();
+        
+		return '<p>' . $timeString . '</p>';
+	}
 }

@@ -18,7 +18,7 @@ class SessionController
         return isset($_SESSION[self::$isLoggedIn]);
     }
 
-    public function logOutUser()
+    public function logoutUser()
     {
         unset($_SESSION[self::$isLoggedIn]);
     }

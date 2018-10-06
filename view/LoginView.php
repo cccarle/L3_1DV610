@@ -15,10 +15,12 @@ class LoginView
 
     private $message;
     private $session;
+    private $MessagesFromDatabase;
 
-    public function __construct($session)
+    public function __construct($session,$MessagesFromDatabase)
     {
         $this->session = $session;
+        $this->MessagesFromDatabase = $MessagesFromDatabase;
     }
 
     public function response()
@@ -28,6 +30,8 @@ class LoginView
 
         if ($this->isLogInButtonPressed()) {
             $message = $this->showResponseMessage();
+        } else {
+            $message = $this->MessagesFromDatabase->showMessage();
         }
 
         if ($this->session->checkIfLoggedIn()) {
@@ -84,26 +88,10 @@ class LoginView
             return $message .= 'Password is missing';
         } elseif (strlen($this->getRequestUserPassword()) < 6) {
             return $message .= 'Password has too few characters, at least 6 characters.';
-        } elseif ($this->session->checkIfLoggedIn()) {
-            return $message .= 'Welcome';
         } else {
-            return $message;
+            return $this->MessagesFromDatabase->showMessage();
         }
     }
-
-    // private function setUserCredentialsToValid(): bool
-    // {
-    //     if ($this->isLogInButtonPressed() && $this->message === '') {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
-    // public function isUserCredentialsValid(): bool
-    // {
-    //     return true;
-    // }
 
     public function isLogOutButtonPressed(): bool
     {

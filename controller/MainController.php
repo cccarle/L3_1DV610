@@ -27,7 +27,7 @@ class MainController
 
     public function render()
     {
-
+        
         $this->loginController->checkIfUserWantToLogin();
         $this->loginController->checkIfUserWantToLogOut();
 

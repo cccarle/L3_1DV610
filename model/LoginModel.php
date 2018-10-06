@@ -6,11 +6,13 @@ class LoginModel
 {
     private $db;
     private $session;
+    private $message;
 
-    public function __construct($database, $session)
+    public function __construct($database, $session,$MessagesFromDatabase)
     {
         $this->db = $database;
         $this->session = $session;
+        $this->MessagesFromDatabase = $MessagesFromDatabase;
     }
 
     public function login($username, $password)
@@ -26,12 +28,24 @@ class LoginModel
             // om hasat lösen passar med inskriva lösen,
             if (password_verify($password, $hashed_password)) {
 
-            $this->session->setToLoggedIn(true);
+                $this->MessagesFromDatabase->loginAttempSuccessful();
 
+                $this->logInSucces();
 
             } else {
+
+                $this->MessagesFromDatabase->incorrectCredentials();
+
             }
         } else {
+
+            $this->MessagesFromDatabase->userNameDoesNotExist();
+            
         }
+    }
+
+    public function logInSucces()
+    {
+        $this->session->setToLoggedIn(true);
     }
 }

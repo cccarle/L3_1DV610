@@ -12,9 +12,17 @@ class LayoutView
         $this->session = $sessionController;
     }
 
-    public function render(LoginView $v, DateTimeView $dtv)
+    public function render(LoginView $v, RegisterView $ref, DateTimeView $dtv)
     {
-        
+
+        $view = null;
+
+        if (isset($_GET["register"])) {
+            $view = $ref->renderRegisterView();
+        } else {
+            $view = $v->renderLoginView();
+        }
+
         echo '<!DOCTYPE html>
       <html>
         <head>
@@ -23,16 +31,29 @@ class LayoutView
         </head>
         <body>
           <h1>Assignment 2</h1>
+
+          ' . $this->renderNavLinks() . '
+
           ' . $this->renderIsLoggedIn() . '
 
           <div class="container">
-              ' . $v->response() . '
+
+              ' . $view . '
 
               ' . $dtv->showTime() . '
           </div>
          </body>
       </html>
     ';
+    }
+
+    private function renderNavLinks()
+    {
+        if (isset($_GET["register"])) {
+            return '<a href="?">Back to login</a>';
+        } elseif (!$this->session->checkIfLoggedIn()) {
+            return '<a href="/L3_1dv610/?register">Register a new user</a>';
+        }
     }
 
     private function renderIsLoggedIn()

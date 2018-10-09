@@ -22,6 +22,7 @@ class SessionController
     {
         unset($_SESSION[self::$isLoggedIn]);
     }
+    
 
     public function setToSuccesfullRegistration($succesRegistration)
     {

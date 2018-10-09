@@ -16,31 +16,28 @@ class LoginView
     private $message;
     private $session;
     private $MessagesFromDatabase;
+    private $loginModel;
 
-    public function __construct($session,$MessagesFromDatabase)
+    public function __construct($session, $loginModel)
     {
         $this->session = $session;
-        $this->MessagesFromDatabase = $MessagesFromDatabase;
+        $this->loginModel = $loginModel;
     }
 
-    public function response()
+    public function renderLoginView()
     {
+        return $this->renderOutputHTML();
+    }
 
-        $message = '';
-
-        if ($this->isLogInButtonPressed()) {
-            $message = $this->showResponseMessage();
-        } else {
-            $message = $this->MessagesFromDatabase->showMessage();
-        }
+    private function renderOutputHTML()
+    {
+        $message = $this->showResponseMessage();
 
         if ($this->session->checkIfLoggedIn()) {
-            $response = $this->generateLogoutButtonHTML($message);
+            return $this->generateLogoutButtonHTML($message);
         } else {
-            $response = $this->generateLoginFormHTML($message);
+            return $this->generateLoginFormHTML($message);
         }
-
-        return $response;
     }
 
     private function generateLogoutButtonHTML($message)
@@ -58,7 +55,7 @@ class LoginView
         return '
 			<form method="post" >
 				<fieldset>
-					<legend>Login - enter Username and password</legend>
+					<legend>Login - Enter Username and password</legend>
 					<p id="' . self::$messageId . '">' . $message . '</p>
 
 					<label for="' . self::$name . '">Username :</label>
@@ -88,8 +85,16 @@ class LoginView
             return $message .= 'Password is missing';
         } elseif (strlen($this->getRequestUserPassword()) < 6) {
             return $message .= 'Password has too few characters, at least 6 characters.';
+        } elseif (!$this->loginModel->doesUserExist()) {
+            return $message .= 'User do not exist';
+        } elseif ($this->loginModel->inCorrectCredentials()) {
+            return $message .= 'Wrong name or password';
+        } elseif ($this->session->checkIfLoggedIn()) {
+            return $message .= 'Welcome';
+        } elseif ($this->session->checkIfLoggedIn() && $this->isLogOutButtonPressed()) {
+            return $message .= 'Bye bye!';
         } else {
-            return $this->MessagesFromDatabase->showMessage();
+            return $message;
         }
     }
 

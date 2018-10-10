@@ -15,7 +15,6 @@ class LoginView
 
     private $message;
     private $session;
-    private $MessagesFromDatabase;
     private $loginModel;
 
     public function __construct($session, $loginModel)
@@ -77,35 +76,32 @@ class LoginView
     {
         $message = '';
 
-        if (empty($this->getRequestUserName())) {
-            return $message .= 'Username is missing';
-        } elseif (strlen($this->getRequestUserName()) < 3) {
-            return $message .= 'Username has too few characters, at least 3 characters.';
-        } elseif (empty($this->getRequestUserPassword())) {
-            return $message .= 'Password is missing';
-        } elseif (strlen($this->getRequestUserPassword()) < 6) {
-            return $message .= 'Password has too few characters, at least 6 characters.';
-        } elseif (!$this->loginModel->doesUserExist()) {
-            return $message .= 'User do not exist';
-        } elseif ($this->loginModel->inCorrectCredentials()) {
-            return $message .= 'Wrong name or password';
-        } elseif ($this->session->checkIfLoggedIn()) {
-            return $message .= 'Welcome';
-        } elseif ($this->session->checkIfLoggedIn() && $this->isLogOutButtonPressed()) {
-            return $message .= 'Bye bye!';
+        if (!$this->session->checkIfLoggedIn()) {
+            if (empty($this->getRequestUserName())) {
+                return $message .= 'Username is missing';
+            } elseif (empty($this->getRequestUserPassword())) {
+                return $message .= 'Password is missing';
+            } elseif (!$this->loginModel->doesUserExist()) {
+                return $message .= 'User do not exist';
+            } elseif (!$this->loginModel->checkIfLoginSuccess()) {
+                return $message .= 'Wrong name or password';
+            } else if ($this->loginModel->checkIfLoginSuccess()) {
+                return $message .= 'Welcome';
+            }
         } else {
             return $message;
         }
     }
 
+
     public function isLogOutButtonPressed(): bool
     {
-        return isset($_REQUEST[self::$logout]);
+        return isset($_POST[self::$logout]);
     }
 
     public function isLogInButtonPressed(): bool
     {
-        return isset($_REQUEST[self::$login]);
+        return isset($_POST[self::$login]);
     }
 
     public function getRequestUserName()

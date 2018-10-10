@@ -5,6 +5,7 @@ namespace view;
 class LayoutView
 {
 
+    private $view;
     private $session;
 
     public function __construct($sessionController)
@@ -12,15 +13,13 @@ class LayoutView
         $this->session = $sessionController;
     }
 
-    public function render(LoginView $v, RegisterView $ref, DateTimeView $dtv)
+    public function render(LoginView $loginView, RegisterView $registerView, DateTimeView $dtv)
     {
 
-        $view = null;
-
         if (isset($_GET["register"])) {
-            $view = $ref->renderRegisterView();
+            $this->view = $registerView->renderRegisterView();
         } else {
-            $view = $v->renderLoginView();
+            $this->view = $loginView->renderLoginView();
         }
 
         echo '<!DOCTYPE html>
@@ -38,7 +37,7 @@ class LayoutView
 
           <div class="container">
 
-              ' . $view . '
+              ' . $this->view . '
 
               ' . $dtv->showTime() . '
           </div>

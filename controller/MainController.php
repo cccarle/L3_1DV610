@@ -9,9 +9,8 @@ class MainController
     private $layoutView;
     private $dateTimeView;
     private $loginController;
-    private $sessionController;
+    private $sessionModel;
     private $registerController;
-
 
     public function __construct(
         \view\LoginView $loginView,
@@ -19,9 +18,9 @@ class MainController
         \view\LayoutView $LayoutView,
         \view\DateTimeView $DateTimeView,
         \controller\LoginController $loginController,
-        \controller\SessionController $sessionController,
+        \model\SessionModel $sessionModel,
         \controller\RegisterController $registerController
-       
+
     ) {
         $this->loginController = $loginController;
         $this->registerController = $registerController;
@@ -29,17 +28,18 @@ class MainController
         $this->registerView = $registerView;
         $this->layoutView = $LayoutView;
         $this->dateTimeView = $DateTimeView;
-        $this->sessionController = $sessionController;
+        $this->sessionModel = $sessionModel;
     }
 
     public function render()
     {
-        
-        $this->loginController->checkIfUserWantToLogin();
-        $this->loginController->checkIfUserWantToLogOut();
+        if ($this->loginView->isLogInButtonPressed()) {
+            $this->loginController->newLoginAttemp();
+        }
 
-
-        $this->registerController->checkIfUserWantToRegister();
+        if ($this->loginView->isLogOutButtonPressed()) {
+            $this->loginController->logutUser();
+        }
 
         $this->layoutView->render(
             $this->loginView,

@@ -1,7 +1,6 @@
 <?php
 //INCLUDE THE FILES NEEDED...
 
-require_once('Exceptions.php');
 require_once 'view/LoginView.php';
 require_once 'view/DateTimeView.php';
 require_once 'view/LayoutView.php';
@@ -9,7 +8,7 @@ require_once 'view/RegisterView.php';
 require_once 'controller/MainController.php';
 require_once 'controller/LoginController.php';
 require_once 'controller/RegisterController.php';
-require_once 'controller/SessionController.php';
+require_once 'model/SessionModel.php';
 require_once 'model/LoginModel.php';
 require_once 'model/RegisterModel.php';
 require_once 'model/UserCredentials.php';
@@ -28,17 +27,14 @@ ini_set('display_errors', 'On');
 $database = new \model\Database();
 $timeModel = new \model\Time();
 
-$sessionController = new \controller\SessionController();
-$loginModel = new \model\LoginModel($database, $sessionController);
+$sessionModel = new \model\SessionModel();
+$loginModel = new \model\LoginModel($database, $sessionModel);
 $registerModel = new \model\RegisterModel($database);
-
-$lv = new \view\LayoutView($sessionController);
-$v = new \view\LoginView($sessionController,$loginModel);
+$lv = new \view\LayoutView($sessionModel);
+$v = new \view\LoginView($sessionModel,$loginModel);
 $reg = new \view\RegisterView();
 $dtv = new \view\DateTimeView($timeModel);
-
-$logInController = new \controller\LoginController($v, $loginModel, $sessionController);
+$logInController = new \controller\LoginController($v, $loginModel, $sessionModel);
 $registerController = new \controller\RegisterController($reg,$registerModel);
-
-$mainController = new \controller\MainController($v,$reg, $lv, $dtv, $logInController, $sessionController, $registerController);
+$mainController = new \controller\MainController($v,$reg, $lv, $dtv, $logInController, $sessionModel, $registerController);
 $mainController->render();

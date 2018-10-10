@@ -7,7 +7,6 @@ class LoginController
     private $logInView;
     private $loginModel;
     private $session;
-    private $MessagesFromDatabase;
 
     public function __construct($logInView, $loginModel, $session)
     {
@@ -16,14 +15,13 @@ class LoginController
         $this->session = $session;
     }
 
-    public function checkIfUserWantToLogin()
-    {
+    public function checkIfUserWantToLogin(){
         if ($this->logInView->isLogInButtonPressed()) {
             $this->newLoginAttemp();
         }
     }
 
-    private function newLoginAttemp()
+    public function newLoginAttemp()
     {
         $this->loginModel->login($this->logInView->getRequestUserName(), $this->logInView->getRequestUserPassword());
     }
@@ -35,7 +33,7 @@ class LoginController
         }
     }
 
-    private function logutUser()
+    public function logutUser()
     {
         $this->session->logoutUser();
     }

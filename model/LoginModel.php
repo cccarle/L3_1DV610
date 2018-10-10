@@ -6,12 +6,13 @@ class LoginModel
 {
     private $db;
     private $session;
-    private $message;
-
+    private $wasLogInSuccesFull;
+    
     public function __construct($database, $session)
     {
         $this->db = $database;
         $this->session = $session;
+
     }
 
     public function login($username, $password)
@@ -26,12 +27,12 @@ class LoginModel
 
             if ($this->matchHashedPasswordWithInputPassword($password, $this->getHasedPasswordFromDB($row))) {
 
-                $this->logInSucces();
+                $this->didLoginAttemtpSucces(true);
 
             } else {
 
-                $this->inCorrectCredentials();
-
+                $this->didLoginAttemtpSucces(false);
+                
             }
         }
     }
@@ -57,15 +58,16 @@ class LoginModel
         }
     }
 
-    public function logInSucces()
+    public function didLoginAttemtpSucces($loginResult)
     {
-        $this->session->setToLoggedIn(true);
-
+        $this->wasLogInSuccesFull = $loginResult;
     }
 
-    public function inCorrectCredentials()
+    public function checkIfLoginSuccess()
     {
-        echo 'dsd';
-       
+        if ($this->wasLogInSuccesFull === true) {
+            $this->session->setToLoggedIn(true);
+        }
+        return $this->wasLogInSuccesFull;
     }
 }

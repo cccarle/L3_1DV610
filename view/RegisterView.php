@@ -6,7 +6,7 @@ class RegisterView
 {
     private static $register = 'RegisterView::Register';
     private static $logout = 'RegisterView::Logout';
-    private static $name = 'RegisterView::Username';
+    private static $name = 'RegisterView::UserName';
     private static $password = 'RegisterView::Password';
     private static $passwordRepeat = 'RegisterView::PasswordRepeat';
     private static $cookieName = 'RegisterView::CookieName';
@@ -14,9 +14,17 @@ class RegisterView
     private static $keep = 'RegisterView::KeepMeLoggedIn';
     private static $messageId = 'RegisterView::Message';
 
+    private $registerModel;
+
+    public function __construct($registerModel)
+    {
+        $this->registerModel = $registerModel;
+    }
+
     public function renderRegisterView()
     {
-        $message = '';
+
+        $message = $this->showResponseMessage();
         return $this->generateRegisterFormHTML($message);
     }
 
@@ -39,9 +47,47 @@ class RegisterView
 		';
     }
 
+    private function showResponseMessage()
+    {
+        $message = '';
+
+        if ($this->isRegisterButtonPressed()) {
+
+            if (strlen($this->getUserName()) < 3) {
+                $message .= 'Username has too few characters, at least 3 characters. <br>';
+            }
+
+            if (strlen($this->getUserPassword()) < 6) {
+                $message .= 'Password has too few characters, at least 6 characters. <br>';
+            }
+
+            if ($this->getUserPassword() != $this->getUserPasswordRepeat()) {
+                $message .= 'Password do not match. <br>';
+            }
+
+            if (!$this->registerModel->wasRegSuccess() && $this->registerModel->isUsernameTaken()) {
+                $message .= 'User exists, pick another username. <br>';
+            }
+
+        } else {
+            return $message = '';
+        }
+
+        return $message;
+    }
+
+    public function isUserCredentialsValid()
+    {
+        if (empty($this->showResponseMessage())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function isRegisterButtonPressed(): bool
     {
-        return isset($_REQUEST[self::$register]);
+        return isset($_POST[self::$register]);
     }
 
     public function getUserName()
@@ -50,7 +96,7 @@ class RegisterView
             return $_POST[self::$name];
         }
     }
-    
+
     public function getUserPassword()
     {
         if (isset($_POST[self::$password])) {

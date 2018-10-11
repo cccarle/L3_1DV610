@@ -30,14 +30,19 @@ class MainController
     }
 
     public function render()
-    {
+    { 
         if ($this->loginView->isLogInButtonPressed()) {
             $this->loginController->newLoginAttemp();
         }
 
-        if ($this->loginView->isLogOutButtonPressed()) {
+        if ($this->sessionModel->checkIfLoggedIn() && $this->loginView->isLogOutButtonPressed()) {
             $this->loginController->logutUser();
         }
+
+        if ($this->registerView->isRegisterButtonPressed() && $this->registerView->isUserCredentialsValid()) {
+            $this->registerController->newRegisterAttemp();
+        }
+
 
         $this->layoutView->render(
             $this->loginView,

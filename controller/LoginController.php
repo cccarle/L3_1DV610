@@ -20,13 +20,6 @@ class LoginController
         $this->loginModel->login($this->logInView->getRequestUserName(), $this->logInView->getRequestUserPassword());
     }
 
-    public function checkIfUserWantToLogOut()
-    {
-        if ($this->logInView->isLogOutButtonPressed()) {
-            $this->logutUser();
-        }
-    }
-
     public function logutUser()
     {
         $this->session->logoutUser();

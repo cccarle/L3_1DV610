@@ -77,22 +77,31 @@ class LoginView
         $message = '';
 
         if (!$this->session->checkIfLoggedIn() && $this->isLogInButtonPressed()) {
+
             if (empty($this->getRequestUserName())) {
                 return $message .= 'Username is missing';
-            } elseif (empty($this->getRequestUserPassword())) {
-                return $message .= 'Password is missing';
-            } elseif (!$this->loginModel->doesUserExist()) {
+            }
+
+            if (empty($this->getRequestUserPassword())) {
+                return  $message .= 'Password is missing';
+            }
+
+            if (!$this->loginModel->doesUserExist()) {
                 return $message .= 'User do not exist';
-            } elseif (!$this->loginModel->checkIfLoginSuccess()) {
+            }
+
+            if (!$this->loginModel->checkIfLoginSuccess()) {
                 return $message .= 'Wrong name or password';
-            } else if ($this->loginModel->checkIfLoginSuccess()) {
+            }
+            if ($this->loginModel->checkIfLoginSuccess()) {
                 return $message .= 'Welcome';
             }
-        } else {
-            return $message;
+        } elseif ($this->isLogOutButtonPressed()) {
+            $message .= 'Bye bye!';
         }
-    }
 
+        return $message;
+    }
 
     public function isLogOutButtonPressed(): bool
     {

@@ -14,14 +14,7 @@ class RegisterController
         $this->registerModel = $registerModel;
     }
 
-    public function checkIfUserWantToRegister()
-    {
-        if ($this->registerView->isRegisterButtonPressed()) {
-            $this->newRegisterAttemp();
-        }
-    }
-
-    private function newRegisterAttemp()
+    public function newRegisterAttemp()
     {
         $this->registerModel->register($this->registerView->getUserName(), $this->registerView->getUserPassword());
     }

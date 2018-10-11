@@ -30,7 +30,7 @@ $registerModel = new \model\RegisterModel($database);
 
 $layoutView = new \view\LayoutView($sessionModel);
 $loginView = new \view\LoginView($sessionModel, $loginModel);
-$registerView = new \view\RegisterView();
+$registerView = new \view\RegisterView($registerModel);
 
 $logInController = new \controller\LoginController($loginView, $loginModel, $sessionModel);
 $registerController = new \controller\RegisterController($registerView, $registerModel);

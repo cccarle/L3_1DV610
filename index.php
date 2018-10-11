@@ -11,7 +11,6 @@ require_once 'controller/RegisterController.php';
 require_once 'model/SessionModel.php';
 require_once 'model/LoginModel.php';
 require_once 'model/RegisterModel.php';
-require_once 'model/UserCredentials.php';
 require_once 'model/Database.php';
 require_once 'model/Time.php';
 
@@ -25,16 +24,16 @@ ini_set('display_errors', 'On');
 
 //CREATE OBJECTS OF THE VIEWS
 $database = new \model\Database();
-$timeModel = new \model\Time();
-
 $sessionModel = new \model\SessionModel();
 $loginModel = new \model\LoginModel($database, $sessionModel);
 $registerModel = new \model\RegisterModel($database);
-$lv = new \view\LayoutView($sessionModel);
-$v = new \view\LoginView($sessionModel,$loginModel);
-$reg = new \view\RegisterView();
-$dtv = new \view\DateTimeView($timeModel);
-$logInController = new \controller\LoginController($v, $loginModel, $sessionModel);
-$registerController = new \controller\RegisterController($reg,$registerModel);
-$mainController = new \controller\MainController($v,$reg, $lv, $dtv, $logInController, $sessionModel, $registerController);
+
+$layoutView = new \view\LayoutView($sessionModel);
+$loginView = new \view\LoginView($sessionModel, $loginModel);
+$registerView = new \view\RegisterView();
+
+$logInController = new \controller\LoginController($loginView, $loginModel, $sessionModel);
+$registerController = new \controller\RegisterController($registerView, $registerModel);
+
+$mainController = new \controller\MainController($loginView, $registerView, $layoutView, $logInController,$registerController,$sessionModel);
 $mainController->render();

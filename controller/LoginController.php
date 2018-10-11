@@ -15,12 +15,6 @@ class LoginController
         $this->session = $session;
     }
 
-    public function checkIfUserWantToLogin(){
-        if ($this->logInView->isLogInButtonPressed()) {
-            $this->newLoginAttemp();
-        }
-    }
-
     public function newLoginAttemp()
     {
         $this->loginModel->login($this->logInView->getRequestUserName(), $this->logInView->getRequestUserPassword());

@@ -76,7 +76,7 @@ class LoginView
     {
         $message = '';
 
-        if (!$this->session->checkIfLoggedIn()) {
+        if (!$this->session->checkIfLoggedIn() && $this->isLogInButtonPressed()) {
             if (empty($this->getRequestUserName())) {
                 return $message .= 'Username is missing';
             } elseif (empty($this->getRequestUserPassword())) {

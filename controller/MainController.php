@@ -15,19 +15,17 @@ class MainController
     public function __construct(
         \view\LoginView $loginView,
         \view\RegisterView $registerView,
-        \view\LayoutView $LayoutView,
-        \view\DateTimeView $DateTimeView,
+        \view\LayoutView $layoutView,
         \controller\LoginController $loginController,
-        \model\SessionModel $sessionModel,
-        \controller\RegisterController $registerController
-
+        \controller\RegisterController $registerController,
+        \model\SessionModel $sessionModel
+      
     ) {
         $this->loginController = $loginController;
         $this->registerController = $registerController;
         $this->loginView = $loginView;
         $this->registerView = $registerView;
-        $this->layoutView = $LayoutView;
-        $this->dateTimeView = $DateTimeView;
+        $this->layoutView = $layoutView;
         $this->sessionModel = $sessionModel;
     }
 
@@ -43,8 +41,11 @@ class MainController
 
         $this->layoutView->render(
             $this->loginView,
-            $this->registerView,
-            $this->dateTimeView
+            $this->registerView
         );
+
+        // ge annan metod en render vyerna
+        // $this->layoutView->userwantstoregister
+        // denna tar in register view
     }
 }

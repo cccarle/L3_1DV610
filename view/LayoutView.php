@@ -7,16 +7,25 @@ class LayoutView
 
     private $view;
     private $session;
+    private $dateTime;
+    private $timeModel;
+    private $register_link = "register";
 
     public function __construct($sessionController)
     {
         $this->session = $sessionController;
+        $this->timeModel = new \model\Time();
+        $this->dateTime = new \view\DateTimeView($this->timeModel);
     }
 
-    public function render(LoginView $loginView, RegisterView $registerView, DateTimeView $dtv)
+
+    // TODO 
+    // baka ihop nav till att lyssan på om användern vill registera annars view log in 
+
+    public function render(LoginView $loginView, RegisterView $registerView)
     {
 
-        if (isset($_GET["register"])) {
+        if ($this->userWantToRegister()) {
             $this->view = $registerView->renderRegisterView();
         } else {
             $this->view = $loginView->renderLoginView();
@@ -39,19 +48,24 @@ class LayoutView
 
               ' . $this->view . '
 
-              ' . $dtv->showTime() . '
+              ' . $this->dateTime->showTime() . '
           </div>
          </body>
       </html>
     ';
     }
 
+    private function userWantToRegister(): bool
+    {
+        return isset($_GET[$this->register_link]);
+    }
+
     private function renderNavLinks()
     {
-        if (isset($_GET["register"])) {
+        if ($this->userWantToRegister()) {
             return '<a href="?">Back to login</a>';
         } elseif (!$this->session->checkIfLoggedIn()) {
-            return '<a href="/L3_1dv610/?register">Register a new user</a>';
+            return '<a href="/L3_1dv610/?' . $this->register_link . '">Register a new user</a>';
         }
     }
 

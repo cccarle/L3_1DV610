@@ -7,7 +7,7 @@ class LoginModel
     private $db;
     private $session;
     private $wasLogInSuccesFull;
-    
+
     public function __construct($database, $session)
     {
         $this->db = $database;
@@ -32,7 +32,7 @@ class LoginModel
             } else {
 
                 $this->didLoginAttemtpSucces(false);
-                
+
             }
         }
     }

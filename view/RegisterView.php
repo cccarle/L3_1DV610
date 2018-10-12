@@ -14,6 +14,10 @@ class RegisterView
     private static $keep = 'RegisterView::KeepMeLoggedIn';
     private static $messageId = 'RegisterView::Message';
 
+    private const PASSWORD_LENGTH_LESS_THEN_THREE = 3;
+    private const USERNAME_LENGTH_LESS_THEN_SIX = 6;
+
+
     private $registerModel;
 
     public function __construct($registerModel)
@@ -53,11 +57,11 @@ class RegisterView
 
         if ($this->isRegisterButtonPressed()) {
 
-            if (strlen($this->getUserName()) < 3) {
+            if (strlen($this->getUserName()) < self::PASSWORD_LENGTH_LESS_THEN_THREE) {
                 $message .= 'Username has too few characters, at least 3 characters. <br>';
             }
 
-            if (strlen($this->getUserPassword()) < 6) {
+            if (strlen($this->getUserPassword()) < self::USERNAME_LENGTH_LESS_THEN_SIX) {
                 $message .= 'Password has too few characters, at least 6 characters. <br>';
             }
 
@@ -68,7 +72,6 @@ class RegisterView
             if (!$this->registerModel->wasRegSuccess() && $this->registerModel->isUsernameTaken()) {
                 $message .= 'User exists, pick another username. <br>';
             }
-
         } else {
             return $message = '';
         }
@@ -78,11 +81,7 @@ class RegisterView
 
     public function isUserCredentialsValid()
     {
-        if (empty($this->showResponseMessage())) {
-            return true;
-        } else {
-            return false;
-        }
+        return empty($this->showResponseMessage());
     }
 
     public function isRegisterButtonPressed(): bool

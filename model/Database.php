@@ -41,11 +41,14 @@ class Database
             echo $this->error;
         }
     }
+
     // Prepare statement with query
+    
     public function query($sql)
     {
         $this->stmt = $this->databaseHandler->prepare($sql);
     }
+
     // Bind values & check which type is passed in
     public function bind($param, $value, $type = null)
     {

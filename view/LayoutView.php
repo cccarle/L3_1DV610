@@ -22,22 +22,28 @@ class LayoutView
     // TODO 
     // baka ihop nav till att lyssan på om användern vill registera annars view log in 
 
-    public function render(LoginView $loginView, RegisterView $registerView)
+    public function render(LoginView $loginView, RegisterView $registerView, GameView $gameView)
     {
 
         if ($this->userWantToRegister()) {
             $this->view = $registerView->renderRegisterView();
-        } else {
-            $this->view = $loginView->renderLoginView();
+        } elseif($this->session->checkIfLoggedIn()) {
+            $this->view .= $loginView->renderLoginView();
+            $this->view .=  $gameView->render();
+
+        }else {
+            $this->view .= $loginView->renderLoginView();
         }
 
         echo '<!DOCTYPE html>
       <html>
         <head>
           <meta charset="utf-8">
+          
           <title>Login Example</title>
         </head>
         <body>
+        
           <h1>Assignment 2</h1>
 
           ' . $this->renderNavLinks() . '

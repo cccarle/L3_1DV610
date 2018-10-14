@@ -11,6 +11,10 @@ class MainController
     private $loginController;
     private $sessionModel;
     private $registerController;
+    private $gameView;
+    private $gameModel;
+    private $gameController;
+
 
     public function __construct(
         \view\LoginView $loginView,
@@ -18,7 +22,11 @@ class MainController
         \view\LayoutView $layoutView,
         \controller\LoginController $loginController,
         \controller\RegisterController $registerController,
-        \model\SessionModel $sessionModel
+        \model\SessionModel $sessionModel,
+        \view\GameView $gameView,
+        \model\GameModel $gameModel,
+        \controller\GameController $gameController
+
       
     ) {
         $this->loginController = $loginController;
@@ -27,6 +35,10 @@ class MainController
         $this->registerView = $registerView;
         $this->layoutView = $layoutView;
         $this->sessionModel = $sessionModel;
+        $this->gameView = $gameView;
+        $this->gameModel = $gameModel;
+        $this->gameController = $gameController;
+
     }
 
     public function render()
@@ -46,7 +58,8 @@ class MainController
 
         $this->layoutView->render(
             $this->loginView,
-            $this->registerView
+            $this->registerView,
+            $this->gameView
         );
 
         // ge annan metod en render vyerna

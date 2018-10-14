@@ -15,7 +15,6 @@ class MainController
     private $gameModel;
     private $gameController;
 
-
     public function __construct(
         \view\LoginView $loginView,
         \view\RegisterView $registerView,
@@ -27,7 +26,6 @@ class MainController
         \model\GameModel $gameModel,
         \controller\GameController $gameController
 
-      
     ) {
         $this->loginController = $loginController;
         $this->registerController = $registerController;
@@ -42,7 +40,7 @@ class MainController
     }
 
     public function render()
-    { 
+    {
         if ($this->loginView->isLogInButtonPressed()) {
             $this->loginController->newLoginAttemp();
         }
@@ -55,6 +53,17 @@ class MainController
             $this->registerController->newRegisterAttemp();
         }
 
+        if ($this->gameView->isStartGameButtonPressed()) {
+
+            // this in GameController ?
+            $this->gameModel->generateRandomNumber();
+            $this->gameModel->setMagicNumberSession();
+        }
+
+        if ($this->gameView->isMakeGuessButtonPressed()) {
+            // this in GameController ?
+            $this->gameController->checkIfMatch();
+        }
 
         $this->layoutView->render(
             $this->loginView,

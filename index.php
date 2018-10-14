@@ -40,7 +40,7 @@ $gameView = new \view\GameView();
 
 $logInController = new \controller\LoginController($loginView, $loginModel, $sessionModel);
 $registerController = new \controller\RegisterController($registerView, $registerModel);
-$gameController = new \controller\GameController();
+$gameController = new \controller\GameController($gameView,$gameModel);
 
 $mainController = new \controller\MainController($loginView, $registerView, $layoutView, $logInController,$registerController,$sessionModel,$gameView,$gameModel,$gameController);
 $mainController->render();

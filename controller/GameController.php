@@ -16,7 +16,18 @@ class GameController
         $this->sessionModel = $sessionModel;
     }
     // rådfråga
-    
+
+    public function startGameController()
+    {
+        if ($this->gameView->isStartGameButtonPressed()) {
+            $this->gameController->startNewGame();
+        }
+
+        if ($this->gameView->isMakeGuessButtonPressed()) {
+            $this->gameController->checkIfMatch();
+        }
+    }
+
     public function startNewGame()
     {
         $this->sessionModel->cleanTriesCounter();

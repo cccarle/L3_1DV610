@@ -1,15 +1,16 @@
 <?php
 //INCLUDE THE FILES NEEDED...
-
 require_once 'view/LoginView.php';
 require_once 'view/DateTimeView.php';
 require_once 'view/LayoutView.php';
 require_once 'view/RegisterView.php';
 require_once 'view/GameView.php';
+
 require_once 'controller/MainController.php';
 require_once 'controller/LoginController.php';
 require_once 'controller/RegisterController.php';
 require_once 'controller/GameController.php';
+
 require_once 'model/SessionModel.php';
 require_once 'model/LoginModel.php';
 require_once 'model/RegisterModel.php';
@@ -32,15 +33,15 @@ $gameModel = new \model\GameModel($sessionModel);
 $loginModel = new \model\LoginModel($database, $sessionModel);
 $registerModel = new \model\RegisterModel($database);
 
-$layoutView = new \view\LayoutView($sessionModel);
 $loginView = new \view\LoginView($sessionModel, $loginModel);
 $registerView = new \view\RegisterView($registerModel);
 $gameView = new \view\GameView($gameModel,$sessionModel);
+$layoutView = new \view\LayoutView($loginView,$registerView);
 
 
 $logInController = new \controller\LoginController($loginView, $loginModel, $sessionModel);
 $registerController = new \controller\RegisterController($registerView, $registerModel);
 $gameController = new \controller\GameController($gameView,$gameModel,$sessionModel);
 
-$mainController = new \controller\MainController($loginView, $registerView, $layoutView, $logInController,$registerController,$sessionModel,$gameView,$gameModel,$gameController);
+$mainController = new \controller\MainController($layoutView, $logInController,$registerController,$sessionModel,$gameView,$gameController);
 $mainController->render();

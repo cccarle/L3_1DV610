@@ -6,32 +6,23 @@ class LayoutView
 {
 
     private $view;
-    private $session;
     private $dateTime;
     private $timeModel;
+    private $loginView;
+    private $registerView;
     private $register_link = "register";
 
-    public function __construct($sessionController)
+    public function __construct(\view\LoginView $loginView, \view\RegisterView $registerView)
     {
-        $this->session = $sessionController;
         $this->timeModel = new \model\Time();
         $this->dateTime = new \view\DateTimeView($this->timeModel);
+        $this->loginView = $loginView;
+        $this->registerView = $registerView;
+
     }
 
-    // TODO
-    // baka ihop nav till att lyssan på om användern vill registera annars view log in
-
-    public function render(LoginView $loginView, RegisterView $registerView, GameView $gameView)
+    public function render(bool $isLoggedIn)
     {
-        if ($this->userWantToRegister()) {
-            $this->view = $registerView->renderRegisterView();
-        } elseif ($this->session->checkIfLoggedIn()) {
-            $this->view .= $loginView->renderLoginView();
-            $this->view .= $gameView->render();
-        } else {
-            $this->view .= $loginView->renderLoginView();
-        }
-
         echo '<!DOCTYPE html>
       <html>
         <head>
@@ -41,12 +32,12 @@ class LayoutView
           <title>Login Example</title>
         </head>
         <body>
-        
+
           <h1>Assignment 2</h1>
-          ' . $this->renderNavLinks() . '
-          ' . $this->renderIsLoggedIn() . '
+          ' . $this->renderNavLinks($isLoggedIn) . '
+          ' . $this->renderIsLoggedIn($isLoggedIn) . '
           <div class="container">
-              ' . $this->view . '
+              ' . $this->renderViews() . '
               ' . $this->dateTime->showTime() . '
           </div>
          </body>
@@ -54,26 +45,35 @@ class LayoutView
     ';
     }
 
-    private function userWantToRegister(): bool
-    {
-        return isset($_GET[$this->register_link]);
-    }
-
-    private function renderNavLinks()
+    private function renderNavLinks($isLoggedIn)
     {
         if ($this->userWantToRegister()) {
             return '<a href="?">Back to login</a>';
-        } elseif (!$this->session->checkIfLoggedIn()) {
+        } elseif (!$isLoggedIn) {
             return '<a href="/L3_1dv610/?' . $this->register_link . '">Register a new user</a>';
         }
     }
 
-    private function renderIsLoggedIn()
+    private function renderIsLoggedIn($isLoggedIn)
     {
-        if ($this->session->checkIfLoggedIn()) {
+        if ($isLoggedIn) {
             return '<h2>Logged in</h2>';
         } else {
             return '<h2>Not logged in</h2>';
         }
+    }
+
+    private function renderViews()
+    {
+        if ($this->userWantToRegister()) {
+            return $this->registerView->renderRegisterView();
+        } else {
+            return $this->loginView->renderLoginView();
+        }
+    }
+
+    private function userWantToRegister()
+    {
+        return isset($_GET[$this->register_link]);
     }
 }

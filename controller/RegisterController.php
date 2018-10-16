@@ -14,6 +14,13 @@ class RegisterController
         $this->registerModel = $registerModel;
     }
 
+    public function startRegisterController()
+    {
+        if ($this->registerView->isRegisterButtonPressed() && $this->registerView->isUserCredentialsValid()) {
+            $this->newRegisterAttemp();
+        }
+    }
+
     public function newRegisterAttemp()
     {
         $this->registerModel->register($this->registerView->getUserName(), $this->registerView->getUserPassword());

@@ -52,23 +52,32 @@ class LoginView
     private function generateLoginFormHTML($message)
     {
         return '
-			<form method="post" >
-				<fieldset>
-					<legend>Login - Enter Username and password</legend>
-					<p id="' . self::$messageId . '">' . $message . '</p>
-
-					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getRequestUserName() . '" />
-
-					<label for="' . self::$password . '">Password :</label>
-					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
-
-					<label for="' . self::$keep . '">Keep me logged in  :</label>
-					<input type="checkbox" id="' . self::$keep . '" name="' . self::$keep . '" />
-
-					<input type="submit" name="' . self::$login . '" value="login" />
-				</fieldset>
-			</form>
+        <div class="container py-5 mt-5">
+        <form method="POST" class="form">
+            <fieldset>
+    
+                <legend class="h1">Login - Enter Username and password</legend>
+    
+                <p id="' . self::$messageId . '">' . $message . '</p>
+    
+                <div class="form-group">
+                    <label for="' . self::$name . '">Username :</label>
+                    <input type="text" class="form-control" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getRequestUserName() . '" />
+                </div>
+    
+    
+                <div class="form-group">
+                    <label for="' . self::$password . '">Password :</label>
+                    <input type="password" class="form-control" id="' . self::$password . '" name="' . self::$password . '" />
+                </div>
+    
+                <label for="' . self::$keep . '">Keep me logged in :</label>
+                <input type="checkbox" id="' . self::$keep . '" name="' . self::$keep . '" />
+                <input type="submit" class="btn btn-primary" name="' . self::$login . '" value="login" />
+            
+            </fieldset>
+        </form>
+    </div>
 		';
     }
 
@@ -83,7 +92,7 @@ class LoginView
             }
 
             if (empty($this->getRequestUserPassword())) {
-                return  $message .= 'Password is missing';
+                return $message .= 'Password is missing';
             }
 
             if (!$this->loginModel->doesUserExist()) {

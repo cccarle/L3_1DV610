@@ -28,19 +28,19 @@ ini_set('display_errors', 'On');
 // CREATE OBJECTS OF THE VIEWS
 $database = new \model\Database();
 $sessionModel = new \model\SessionModel();
+$gameModel = new \model\GameModel($sessionModel);
 $loginModel = new \model\LoginModel($database, $sessionModel);
 $registerModel = new \model\RegisterModel($database);
-$gameModel = new \model\GameModel();
 
 $layoutView = new \view\LayoutView($sessionModel);
 $loginView = new \view\LoginView($sessionModel, $loginModel);
 $registerView = new \view\RegisterView($registerModel);
-$gameView = new \view\GameView();
+$gameView = new \view\GameView($gameModel);
 
 
 $logInController = new \controller\LoginController($loginView, $loginModel, $sessionModel);
 $registerController = new \controller\RegisterController($registerView, $registerModel);
-$gameController = new \controller\GameController($gameView,$gameModel);
+$gameController = new \controller\GameController($gameView,$gameModel,$sessionModel);
 
 $mainController = new \controller\MainController($loginView, $registerView, $layoutView, $logInController,$registerController,$sessionModel,$gameView,$gameModel,$gameController);
 $mainController->render();

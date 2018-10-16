@@ -5,40 +5,56 @@ namespace model;
 class GameModel
 {
 
-    // generate a random number
-    // store it
-    // create a get method
-    // method to check if it was a match or not
+    private static $randomWord = "gameModel::randomWord";
 
-    private $randomNumber;
+    private $isMatch;
+    private $numberToLow;
+    private $numberToHigh;
 
-    private static $magicWord = "gameModel::magicWord";
+    private $sessionModel;
+
+    public function __construct($sessionModel)
+    {
+        $this->sessionModel = $sessionModel;
+    }
 
     public function generateRandomNumber()
     {
-        $this->randomNumber = rand(0, 20);
+        return self::$randomWord = rand(0, 20);
     }
 
-    public function getRandomNumber()
+    public function storeRandomNumber()
     {
-        return $this->randomNumber;
+        $this->sessionModel->setMagicNumberSession(self::$randomWord);
     }
 
-
-    // Move this to session controller
-
-    public function setMagicNumberSession()
+    public function checkIfMatch($guessedNumber)
     {
-        return $_SESSION[self::$magicWord] = $this->randomNumber;
-    }
-
-    public function getMagicNumber()
-    {
-
-        if (isset($_SESSION[self::$magicWord])) {
-            return $_SESSION[self::$magicWord];
+        if ($this->sessionModel->getMagicNumber() == $guessedNumber) {
+            $this->isMatch = true;
         }
 
+        if ($guessedNumber > $this->sessionModel->getMagicNumber()) {
+            $this->numberToHigh = true;
+        }
+
+        if ($guessedNumber < $this->sessionModel->getMagicNumber()) {
+            $this->numberToLow = true;
+        }
     }
 
+    public function isMatch()
+    {
+        return $this->isMatch;
+    }
+
+    public function numberWasToHigh()
+    {
+        return $this->numberToHigh;
+    }
+
+    public function numberWasToLow()
+    {
+        return $this->numberToLow;
+    }
 }

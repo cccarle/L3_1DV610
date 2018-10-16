@@ -53,15 +53,11 @@ class MainController
             $this->registerController->newRegisterAttemp();
         }
 
-        if ($this->gameView->isStartGameButtonPressed()) {
-
-            // this in GameController ?
-            $this->gameModel->generateRandomNumber();
-            $this->gameModel->setMagicNumberSession();
+        if ($this->gameView->isStartGameButtonPressed()) {   
+            $this->gameController->startNewGame();
         }
 
         if ($this->gameView->isMakeGuessButtonPressed()) {
-            // this in GameController ?
             $this->gameController->checkIfMatch();
         }
 

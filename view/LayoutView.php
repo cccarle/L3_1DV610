@@ -18,20 +18,17 @@ class LayoutView
         $this->dateTime = new \view\DateTimeView($this->timeModel);
     }
 
-
-    // TODO 
-    // baka ihop nav till att lyssan på om användern vill registera annars view log in 
+    // TODO
+    // baka ihop nav till att lyssan på om användern vill registera annars view log in
 
     public function render(LoginView $loginView, RegisterView $registerView, GameView $gameView)
     {
-
         if ($this->userWantToRegister()) {
             $this->view = $registerView->renderRegisterView();
-        } elseif($this->session->checkIfLoggedIn()) {
+        } elseif ($this->session->checkIfLoggedIn()) {
             $this->view .= $loginView->renderLoginView();
-            $this->view .=  $gameView->render();
-
-        }else {
+            $this->view .= $gameView->render();
+        } else {
             $this->view .= $loginView->renderLoginView();
         }
 
@@ -39,21 +36,17 @@ class LayoutView
       <html>
         <head>
           <meta charset="utf-8">
-          
+          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
           <title>Login Example</title>
         </head>
         <body>
-        
+
           <h1>Assignment 2</h1>
-
           ' . $this->renderNavLinks() . '
-
           ' . $this->renderIsLoggedIn() . '
-
           <div class="container">
-
               ' . $this->view . '
-
               ' . $this->dateTime->showTime() . '
           </div>
          </body>

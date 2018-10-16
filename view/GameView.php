@@ -11,6 +11,11 @@ class GameView
     private $gameModel;
     private $message;
 
+    public function __construct($gameModel)
+    {
+        $this->gameModel = $gameModel;
+    }
+
     public function render()
     {
 
@@ -30,6 +35,10 @@ class GameView
 
         $message = '';
 
+        if ($this->getGuessedNumber() === null) {
+            $message = '';
+        }
+
         if ($this->getGuessedNumber() > 20) {
             $message = 'The number is higher then 20 <br> Only numbers between 1-20 is allowed';
         }
@@ -38,12 +47,20 @@ class GameView
             $message = 'The number is lower then 1 <br> Only numbers between 1-20 is allowed';
         }
 
-        if (!preg_match("/^[0-9][0-9]*$/", $this->getGuessedNumber())) {
+        if (!preg_match("/^[1-9][1-9]*$/", $this->getGuessedNumber())) {
             $message = 'Only numbers allowed';
         }
 
-        if ($this->getGuessedNumber() === null) {
-            $message = '';
+        if ($this->gameModel->numberWasToLow()) {
+            $message = 'Your number was to low';
+        }
+
+        if ($this->gameModel->numberWasToHigh()) {
+            $message = 'Your number was to high';
+        }
+
+        if ($this->gameModel->isMatch()) {
+            $message = 'You Won';
         }
 
         return $message;

@@ -35,7 +35,7 @@ $registerModel = new \model\RegisterModel($database);
 $layoutView = new \view\LayoutView($sessionModel);
 $loginView = new \view\LoginView($sessionModel, $loginModel);
 $registerView = new \view\RegisterView($registerModel);
-$gameView = new \view\GameView($gameModel);
+$gameView = new \view\GameView($gameModel,$sessionModel);
 
 
 $logInController = new \controller\LoginController($loginView, $loginModel, $sessionModel);

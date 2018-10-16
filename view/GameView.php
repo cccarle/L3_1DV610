@@ -6,14 +6,20 @@ class GameView
 {
     private static $makeGuessButton = 'GameView::makeGuessButton';
     private static $startGameButton = 'GameView::startGameButton';
+    private static $playAgainButton = 'GameView::playAgainButton';
     private static $guessedNumber = 'GameView::guessedNumber';
 
+    private const NUMBER_HIGHER_THEN_TWENTY = 20;
+    private const NUMBER_LOWER_THEN_ONE = 1;
+
     private $gameModel;
+    private $sessionModel;
     private $message;
 
-    public function __construct($gameModel)
+    public function __construct($gameModel,$sessionModel)
     {
         $this->gameModel = $gameModel;
+        $this->sessionModel = $sessionModel;
     }
 
     public function render()
@@ -37,36 +43,24 @@ class GameView
 
         if ($this->getGuessedNumber() === null) {
             $message = '';
-        }
-
-        if ($this->getGuessedNumber() > 20) {
-            $message = 'The number is higher then 20 <br> Only numbers between 1-20 is allowed';
-        }
-
-        if ($this->getGuessedNumber() < 1) {
-            $message = 'The number is lower then 1 <br> Only numbers between 1-20 is allowed';
-        }
-
-        if (!preg_match("/^[1-9][1-9]*$/", $this->getGuessedNumber())) {
+        } elseif (!is_numeric($this->getGuessedNumber())) {
             $message = 'Only numbers allowed';
-        }
-
-        if ($this->gameModel->numberWasToLow()) {
+        } elseif ($this->getGuessedNumber() > self::NUMBER_HIGHER_THEN_TWENTY) {
+            $message = 'The number is higher then 20 <br> Only numbers between 1-20 is allowed';
+        } elseif ($this->getGuessedNumber() < self::NUMBER_LOWER_THEN_ONE) {
+            $message = 'The number is lower then 1 <br> Only numbers between 1-20 is allowed';
+        } elseif ($this->gameModel->numberWasToLow()) {
             $message = 'Your number was to low';
-        }
-
-        if ($this->gameModel->numberWasToHigh()) {
+        } elseif ($this->gameModel->numberWasToHigh()) {
             $message = 'Your number was to high';
-        }
-
-        if ($this->gameModel->isMatch()) {
-            $message = 'You Won';
+        } elseif ($this->gameModel->isMatch()) {
+            $message = 'You guessed right on ' . $this->sessionModel->getNumberOfTries() . ' tries';
         }
 
         return $message;
     }
 
-    public function renderGameDescription()
+    private function renderGameDescription()
     {
         echo '
         <div class="container py-5 mt-5">
@@ -80,9 +74,8 @@ class GameView
         ';
     }
 
-    public function renderInputForm($message)
+    private function renderInputForm($message)
     {
-
         echo '
         <div class="container py-5 mt-5 col-5">
         <form method="POST" class="form">
@@ -97,10 +90,20 @@ class GameView
 
           <p>' . $message . '</p>
 
-          <input type="submit" class="btn btn-info" name="' . self::$makeGuessButton . '" value="Make a guess" />
+          ' . $this->renderButton() . '
+
           </form>
         </div>
         ';
+    }
+
+    private function renderButton()
+    {
+        if ($this->gameModel->isMatch()) {
+            return '<input type="submit" class="btn btn-info" name="' . self::$playAgainButton . '" value="Play Again" />';
+        } else {
+            return '<input type="submit" class="btn btn-info" name="' . self::$makeGuessButton . '" value="Make a guess" />';
+        }
     }
 
     public function isStartGameButtonPressed()

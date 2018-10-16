@@ -4,13 +4,14 @@ namespace model;
 
 class GameModel
 {
-
     private static $randomWord = "gameModel::randomWord";
 
     private $isMatch;
     private $numberToLow;
     private $numberToHigh;
+    private $numberOfTries;
 
+    
     private $sessionModel;
 
     public function __construct($sessionModel)
@@ -56,5 +57,9 @@ class GameModel
     public function numberWasToLow()
     {
         return $this->numberToLow;
+    }
+
+    public function countTries(){
+
     }
 }

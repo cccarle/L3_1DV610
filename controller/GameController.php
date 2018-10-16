@@ -15,9 +15,11 @@ class GameController
         $this->gameModel = $gameModel;
         $this->sessionModel = $sessionModel;
     }
-
+    // rådfråga
+    
     public function startNewGame()
     {
+        $this->sessionModel->cleanTriesCounter();
         $this->gameModel->generateRandomNumber();
         $this->gameModel->storeRandomNumber();
     }
@@ -25,5 +27,6 @@ class GameController
     public function checkIfMatch()
     {
         $this->gameModel->checkIfMatch($this->gameView->getGuessedNumber());
+        $this->sessionModel->addTriesToCounterSession();
     }
 }

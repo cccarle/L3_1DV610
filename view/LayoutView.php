@@ -5,19 +5,18 @@ namespace view;
 class LayoutView
 {
 
-    private $view;
-    private $dateTime;
-    private $timeModel;
     private $loginView;
     private $registerView;
+    private $gameView;
+
     private $register_link = "register";
 
-    public function __construct(\view\LoginView $loginView, \view\RegisterView $registerView)
+    public function __construct(\view\LoginView $loginView, \view\RegisterView $registerView, \view\GameView $gameView)
     {
-        $this->timeModel = new \model\Time();
-        $this->dateTime = new \view\DateTimeView($this->timeModel);
+        $this->dateTime = new \view\DateTimeView();
         $this->loginView = $loginView;
         $this->registerView = $registerView;
+        $this->gameView = $gameView;
 
     }
 
@@ -37,7 +36,8 @@ class LayoutView
           ' . $this->renderNavLinks($isLoggedIn) . '
           ' . $this->renderIsLoggedIn($isLoggedIn) . '
           <div class="container">
-              ' . $this->renderViews() . '
+              ' . $this->renderViews($isLoggedIn) . '
+              ' . $this->renderGameView($isLoggedIn) . '
               ' . $this->dateTime->showTime() . '
           </div>
          </body>
@@ -69,6 +69,13 @@ class LayoutView
             return $this->registerView->renderRegisterView();
         } else {
             return $this->loginView->renderLoginView();
+        }
+    }
+
+    private function renderGameView($isLoggedIn)
+    {
+        if ($isLoggedIn) {
+            return $this->gameView->render();
         }
     }
 

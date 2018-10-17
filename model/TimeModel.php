@@ -1,7 +1,7 @@
 <?php
 namespace model;
 
-class Time
+class TimeModel
 {
     public function getTime()
     {

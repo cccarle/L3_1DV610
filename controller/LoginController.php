@@ -15,7 +15,7 @@ class LoginController
         $this->sessionModel = $sessionModel;
     }
 
-    public function startLoginController()
+    public function initialize()
     {
         if ($this->loginView->isLogInButtonPressed()) {
             $this->newLoginAttemp();

@@ -4,23 +4,18 @@ namespace view;
 
 class DateTimeView
 {
+    private $timeString;
 
-    private $timeModel;
-
-    public function __construct($timeModel)
+    public function __construct()
     {
-        $this->timeModel = $timeModel;
+        $this->timeModel = new \model\TimeModel();
     }
-
-    /*
-    Returns a string with time from server.
-     */
 
     public function showTime()
     {
 
-        $timeString = $this->timeModel->getTime();
+        $this->timeString = $this->timeModel->getTime();
 
-        return '<p>' . $timeString . '</p>';
+        return '<p>' . $this->timeString . '</p>';
     }
 }

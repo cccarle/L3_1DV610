@@ -3,50 +3,42 @@
 namespace model;
 
 use PDO;
-/*
- * PDO Database Class
- * Connect to database
- * Create prepared statements
- * Bind Values
- * Return rows and results
- */
-
-include './config/config.php';
 
 class Database
 {
-    private $host = DB_HOST;
-    private $user = DB_USER;
-    private $pass = DB_PASS;
-    private $databaseName = DB_NAME;
     private $databaseHandler;
-    private $stmt;
+    private $statement;
     private $error;
+    private $dsn;
 
-    // TODO: change function name to display the comments - this is messy.
     public function __construct()
     {
-        // set DSN
-        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->databaseName;
-        // TODO : check for more usefull options
+        $this->config = new \Config\Config();
+        $this->createNewPDO();
+    }
+
+    private function createNewPDO()
+    {
+
+        $this->dsn = 'mysql:host=' . $this->config->dbHost() . ';dbname=' . $this->config->dbName();
+
         $options = array(
             PDO::ATTR_PERSISTENT => true, // Persistent connection -increase preformance
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // Handle errors
         );
-        // Create PDO instance
+
         try {
-            $this->databaseHandler = new PDO($dsn, $this->user, $this->pass);
-        } catch (PDOExeption $e) {
-            $this->error = $e->getMessage();
+            $this->databaseHandler = new PDO($this->dsn, $this->config->dbUsername(), $this->config->dbPassword());
+        } catch (PDOExeption $error) {
+            $this->error = $error->getMessage();
             echo $this->error;
         }
     }
 
     // Prepare statement with query
-    
     public function query($sql)
     {
-        $this->stmt = $this->databaseHandler->prepare($sql);
+        $this->statement = $this->databaseHandler->prepare($sql);
     }
 
     // Bind values & check which type is passed in
@@ -67,32 +59,25 @@ class Database
                     $type = PDO::PARAM_STR;
             }
         }
-        $this->stmt->bindValue($param, $value, $type);
+        $this->statement->bindValue($param, $value, $type);
     }
 
     // Execute the prepared statment
     public function execute()
     {
-        return $this->stmt->execute();
-    }
-
-    // Get result set as array of objects
-    public function resultSet()
-    {
-        $this->execute();
-        return $this->stmt->fetchAll(PDO::FETCH_OBJ);
+        return $this->statement->execute();
     }
 
     // Get single record as object
     public function single()
     {
         $this->execute();
-        return $this->stmt->fetch(PDO::FETCH_OBJ);
+        return $this->statement->fetch(PDO::FETCH_OBJ);
     }
 
     // Get row count
     public function rowCount()
     {
-        return $this->stmt->rowCount();
+        return $this->statement->rowCount();
     }
 }

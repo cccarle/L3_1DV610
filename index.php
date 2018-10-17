@@ -16,7 +16,9 @@ require_once 'model/LoginModel.php';
 require_once 'model/RegisterModel.php';
 require_once 'model/GameModel.php';
 require_once 'model/Database.php';
-require_once 'model/Time.php';
+require_once 'model/TimeModel.php';
+
+require_once 'config/Config.php';
 
 if (!isset($_SESSION)) {
     session_start();
@@ -35,13 +37,12 @@ $registerModel = new \model\RegisterModel($database);
 
 $loginView = new \view\LoginView($sessionModel, $loginModel);
 $registerView = new \view\RegisterView($registerModel);
-$gameView = new \view\GameView($gameModel,$sessionModel);
-$layoutView = new \view\LayoutView($loginView,$registerView);
-
+$gameView = new \view\GameView($gameModel, $sessionModel);
+$layoutView = new \view\LayoutView($loginView, $registerView, $gameView);
 
 $logInController = new \controller\LoginController($loginView, $loginModel, $sessionModel);
 $registerController = new \controller\RegisterController($registerView, $registerModel);
-$gameController = new \controller\GameController($gameView,$gameModel,$sessionModel);
+$gameController = new \controller\GameController($gameView, $gameModel, $sessionModel);
 
-$mainController = new \controller\MainController($layoutView, $logInController,$registerController,$sessionModel,$gameView,$gameController);
+$mainController = new \controller\MainController($layoutView, $logInController, $registerController, $gameController, $sessionModel);
 $mainController->render();

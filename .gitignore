@@ -16,6 +16,10 @@ Icon
 # Ignore file namned `Config.php`
 Config.php
 
+# Ignore folder namned `config`
+config/
+
+
 
 # Files that might appear in the root of a volume
 .DocumentRevisions-V100

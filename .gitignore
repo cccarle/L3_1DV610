@@ -16,8 +16,8 @@ Icon
 # Ignore file namned `Config.php`
 Config.php
 
-# Ignore folder namned `config`
-config/
+# Ignore folder namned `test`
+test/
 
 
 

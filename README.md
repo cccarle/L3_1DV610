@@ -1,6 +1,6 @@
 # 1DV610
 
-Assigment L3. Requirements and Code Quality
+Assigment L3. Requirements and Code Quality <br>
 A course for better understanding of code quality
 
 ### Features
@@ -12,27 +12,49 @@ A course for better understanding of code quality
  - MVC
  
 ### Tech
-* [PHP] - Built only using PHP.
+* [PHP](https://secure.php.net/) - Language.
+* [XAMPP](https://www.apachefriends.org/index.html) - To run and test locally.
+* [VSCODE](https://code.visualstudio.com/) - Editor.
+
 
 ### Installation
 
-Install the dependencies and devDependencies and start the server.
+###### 1.Clone the repo
 
 ```sh
-$ cd repo
-$ npm install -d
-$ node app
+$ git clone https://github.com/cccarle/L3_1DV610.git
+
+```
+###### 2. Change a file named "config-default.php" to "config.php"
+
+```sh
+Open folder "L3_1DV610"
+cd config
+Change the file "config-default.php" to "config.php"
+
 ```
 
-For production environments...
+###### 3. Add your db credantials to your newly renamed file "config.php"
+```javascript
+ private $db_host = 'your host';
+ private $db_user = 'your db username';
+ private $db_password = 'your db password';
+ private $db_name = 'your db name';
+    
+```
 
-```sh
-$ npm install --production
-$ NODE_ENV=production node app
+###### 4. Create a table called users in your mysql database
+
+```javascript
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
 
 ### Observations
-
 #### Changes
 ### Status
 

@@ -4,9 +4,9 @@ namespace config;
 
 /* 
 NOTE: This is a default config-file, to make this work you need to:
-Change this php files name from "Config-default.php" to "Congfig.php"
+Change this php file name from "Config-default.php" to "Config.php"
 
-This will make the gitignore to hinder you from uploading your config-file to github.
+This will make the config work & make gitignore hinder you from uploading your config-file to github.
 */
 
 class Config

@@ -15,23 +15,32 @@ class LoginController
         $this->sessionModel = $sessionModel;
     }
 
-    public function initialize()
+    public function initialize(): void
+    {
+        $this->checkIfUserWantToLogIn();
+        $this->checkIfUserWantToLogout();
+    }
+
+    private function checkIfUserWantToLogIn(): void
     {
         if ($this->loginView->isLogInButtonPressed()) {
             $this->newLoginAttemp();
         }
+    }
 
+    private function checkIfUserWantToLogout(): void
+    {
         if ($this->sessionModel->checkIfLoggedIn() && $this->loginView->isLogOutButtonPressed()) {
             $this->logutUser();
         }
     }
 
-    public function newLoginAttemp()
+    private function newLoginAttemp(): void
     {
         $this->loginModel->login($this->loginView->getRequestUserName(), $this->loginView->getRequestUserPassword());
     }
 
-    public function logutUser()
+    private function logutUser(): void
     {
         $this->sessionModel->logoutUser();
     }

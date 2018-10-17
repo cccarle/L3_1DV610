@@ -14,32 +14,27 @@ class LoginView
     private static $messageId = 'LoginView::Message';
 
     private $message;
-    private $session;
+    private $sessionModel;
     private $loginModel;
 
-    public function __construct($session, $loginModel)
+    public function __construct($sessionModel, $loginModel)
     {
-        $this->session = $session;
+        $this->sessionModel = $sessionModel;
         $this->loginModel = $loginModel;
     }
 
-    public function renderLoginView()
-    {
-        return $this->renderOutputHTML();
-    }
-
-    private function renderOutputHTML()
+    public function renderLoginView() : string
     {
         $message = $this->showResponseMessage();
 
-        if ($this->session->checkIfLoggedIn()) {
+        if ($this->sessionModel->checkIfLoggedIn()) {
             return $this->generateLogoutButtonHTML($message);
         } else {
             return $this->generateLoginFormHTML($message);
         }
     }
 
-    private function generateLogoutButtonHTML($message)
+    private function generateLogoutButtonHTML($message) : string
     {
         return '
 			<form  method="post" >
@@ -49,43 +44,43 @@ class LoginView
 		';
     }
 
-    private function generateLoginFormHTML($message)
+    private function generateLoginFormHTML($message) : string
     {
         return '
         <div class="container py-5 mt-5">
         <form method="POST" class="form">
             <fieldset>
-    
+
                 <legend class="h1">Login - Enter Username and password</legend>
-    
+
                 <p id="' . self::$messageId . '">' . $message . '</p>
-    
+
                 <div class="form-group">
                     <label for="' . self::$name . '">Username :</label>
                     <input type="text" class="form-control" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getRequestUserName() . '" />
                 </div>
-    
-    
+
+
                 <div class="form-group">
                     <label for="' . self::$password . '">Password :</label>
                     <input type="password" class="form-control" id="' . self::$password . '" name="' . self::$password . '" />
                 </div>
-    
+
                 <label for="' . self::$keep . '">Keep me logged in :</label>
                 <input type="checkbox" id="' . self::$keep . '" name="' . self::$keep . '" />
                 <input type="submit" class="btn btn-primary" name="' . self::$login . '" value="login" />
-            
+
             </fieldset>
         </form>
     </div>
 		';
     }
 
-    private function showResponseMessage()
+    private function showResponseMessage() : string
     {
         $message = '';
 
-        if (!$this->session->checkIfLoggedIn() && $this->isLogInButtonPressed()) {
+        if (!$this->sessionModel->checkIfLoggedIn() && $this->isLogInButtonPressed()) {
 
             if (empty($this->getRequestUserName())) {
                 return $message .= 'Username is missing';
@@ -105,8 +100,8 @@ class LoginView
             if ($this->loginModel->checkIfLoginSuccess()) {
                 return $message .= 'Welcome';
             }
-        } elseif ($this->isLogOutButtonPressed()) {
-            $message .= 'Bye bye!';
+        }if ($this->isLogOutButtonPressed()) {
+            return $message .= 'Bye bye!';
         }
 
         return $message;

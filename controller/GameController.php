@@ -4,7 +4,6 @@ namespace controller;
 
 class GameController
 {
-
     private $gameView;
     private $gameModel;
     private $sessionModel;
@@ -16,32 +15,34 @@ class GameController
         $this->sessionModel = $sessionModel;
     }
 
-    public function initialize()
+    public function initialize(): void
+    {
+        $this->checkIfUserWantToStartNewGame();
+        $this->checkIfUserWantToMakeAGuess();
+    }
+
+    private function checkIfUserWantToStartNewGame(): void
     {
         if ($this->gameView->isStartGameButtonPressed()) {
             $this->startNewGame();
         }
+    }
 
+    private function checkIfUserWantToMakeAGuess(): void
+    {
         if ($this->gameView->isMakeGuessButtonPressed()) {
             $this->checkIfMatch();
         }
     }
 
-    private function userWantToStartNewGame()
-    {
-        if ($this->gameView->isStartGameButtonPressed()) {
-            $this->startNewGame();
-        }
-    }
-
-    private function startNewGame()
+    private function startNewGame(): void
     {
         $this->sessionModel->cleanTriesCounter();
         $this->gameModel->generateRandomNumber();
         $this->gameModel->storeRandomNumber();
     }
 
-    private function checkIfMatch()
+    private function checkIfMatch(): void
     {
         $this->gameModel->checkIfMatch($this->gameView->getGuessedNumber());
         $this->sessionModel->addTriesToCounterSession();

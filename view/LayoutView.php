@@ -17,7 +17,6 @@ class LayoutView
         $this->loginView = $loginView;
         $this->registerView = $registerView;
         $this->gameView = $gameView;
-
     }
 
     public function render(bool $isLoggedIn)
@@ -33,13 +32,16 @@ class LayoutView
         <body>
 
           <h1>Assignment 2</h1>
+
           ' . $this->renderNavLinks($isLoggedIn) . '
           ' . $this->renderIsLoggedIn($isLoggedIn) . '
+
           <div class="container">
               ' . $this->renderViews($isLoggedIn) . '
               ' . $this->renderGameView($isLoggedIn) . '
               ' . $this->dateTime->showTime() . '
           </div>
+
          </body>
       </html>
     ';
@@ -72,15 +74,15 @@ class LayoutView
         }
     }
 
+    private function userWantToRegister()
+    {
+        return isset($_GET[$this->register_link]);
+    }
+
     private function renderGameView($isLoggedIn)
     {
         if ($isLoggedIn) {
             return $this->gameView->render();
         }
-    }
-
-    private function userWantToRegister()
-    {
-        return isset($_GET[$this->register_link]);
     }
 }

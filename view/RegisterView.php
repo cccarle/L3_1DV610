@@ -9,14 +9,11 @@ class RegisterView
     private static $name = 'RegisterView::UserName';
     private static $password = 'RegisterView::Password';
     private static $passwordRepeat = 'RegisterView::PasswordRepeat';
-    private static $cookieName = 'RegisterView::CookieName';
-    private static $cookiePassword = 'RegisterView::CookiePassword';
     private static $keep = 'RegisterView::KeepMeLoggedIn';
     private static $messageId = 'RegisterView::Message';
 
     private const PASSWORD_LENGTH_LESS_THEN_THREE = 3;
     private const USERNAME_LENGTH_LESS_THEN_SIX = 6;
-
 
     private $registerModel;
 
@@ -25,14 +22,14 @@ class RegisterView
         $this->registerModel = $registerModel;
     }
 
-    public function renderRegisterView()
+    public function renderRegisterView(): string
     {
-
         $message = $this->showResponseMessage();
+
         return $this->generateRegisterFormHTML($message);
     }
 
-    private function generateRegisterFormHTML($message)
+    private function generateRegisterFormHTML($message): string
     {
         return '
 			<form method="post"  >
@@ -51,7 +48,7 @@ class RegisterView
 		';
     }
 
-    private function showResponseMessage()
+    private function showResponseMessage(): string
     {
         $message = '';
 
@@ -79,7 +76,7 @@ class RegisterView
         return $message;
     }
 
-    public function isUserCredentialsValid()
+    public function isUserCredentialsValid(): bool
     {
         return empty($this->showResponseMessage());
     }

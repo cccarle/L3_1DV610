@@ -22,7 +22,7 @@ class GameView
         $this->sessionModel = $sessionModel;
     }
 
-    public function render()
+    public function render(): string
     {
 
         $message = $this->responseMessage();
@@ -36,7 +36,7 @@ class GameView
         return $this->renderGameDescription();
     }
 
-    public function responseMessage()
+    public function responseMessage(): string
     {
 
         $message = '';
@@ -60,9 +60,9 @@ class GameView
         return $message;
     }
 
-    private function renderGameDescription()
+    private function renderGameDescription() : string
     {
-        echo '
+        return '
         <div class="container py-5 mt-5">
             <form method="POST" class="form">
                 <h1 class="display-4 font-weight-bold">Welcome To "Guess The Number" Game</h1>
@@ -74,9 +74,9 @@ class GameView
         ';
     }
 
-    private function renderInputForm($message)
+    private function renderInputForm($message) : string
     {
-        echo '
+        return '
         <div class="container py-5 mt-5 col-5">
         <form method="POST" class="form">
 
@@ -97,7 +97,7 @@ class GameView
         ';
     }
 
-    private function renderButton()
+    private function renderButton() : string
     {
         if ($this->gameModel->isMatch()) {
             return '<input type="submit" class="btn btn-info" name="' . self::$playAgainButton . '" value="Play Again" />';
@@ -106,12 +106,12 @@ class GameView
         }
     }
 
-    public function isStartGameButtonPressed()
+    public function isStartGameButtonPressed(): bool
     {
         return isset($_POST[self::$startGameButton]);
     }
 
-    public function isMakeGuessButtonPressed()
+    public function isMakeGuessButtonPressed(): bool
     {
         return isset($_POST[self::$makeGuessButton]);
     }

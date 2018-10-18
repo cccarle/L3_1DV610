@@ -15,7 +15,7 @@ require_once 'model/SessionModel.php';
 require_once 'model/LoginModel.php';
 require_once 'model/RegisterModel.php';
 require_once 'model/GameModel.php';
-require_once 'model/Database.php';
+require_once 'model/DatabaseModel.php';
 require_once 'model/TimeModel.php';
 
 require_once 'config/Config.php';
@@ -29,10 +29,10 @@ error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
 // CREATE OBJECTS OF THE VIEWS
-$database = new \model\Database();
+$database = new \model\DatabaseModel();
 $sessionModel = new \model\SessionModel();
 $gameModel = new \model\GameModel($sessionModel);
-$loginModel = new \model\LoginModel($database, $sessionModel);
+$loginModel = new \model\LoginModel($database);
 $registerModel = new \model\RegisterModel($database);
 
 $loginView = new \view\LoginView($sessionModel, $loginModel);
@@ -44,5 +44,5 @@ $logInController = new \controller\LoginController($loginView, $loginModel, $ses
 $registerController = new \controller\RegisterController($registerView, $registerModel);
 $gameController = new \controller\GameController($gameView, $gameModel, $sessionModel);
 
-$mainController = new \controller\MainController($layoutView, $logInController, $registerController, $gameController, $sessionModel);
+$mainController = new \controller\MainController($layoutView, $logInController, $registerController, $gameController,$sessionModel);
 $mainController->render();

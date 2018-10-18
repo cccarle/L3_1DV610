@@ -1,5 +1,4 @@
 <?php
-
 namespace model;
 
 class LoginModel
@@ -8,41 +7,27 @@ class LoginModel
     private $session;
     private $wasLogInSuccesFull;
 
-    public function __construct($database, $session)
+    public function __construct($database)
     {
         $this->db = $database;
-        $this->session = $session;
-
     }
 
     public function login($username, $password)
     {
-
         $this->db->query('SELECT * FROM users WHERE user_username = :user_username');
         $this->db->bind(':user_username', $username);
 
         $row = $this->db->single();
 
-        if ($this->doesUserExist()) {
-
+        if ($this->db->rowCount() > 0) {
             if ($this->matchHashedPasswordWithInputPassword($password, $this->getHasedPasswordFromDB($row))) {
 
-                $this->didLoginAttemtpSucces(true);
+                $this->wasLogInSuccesFull = true;
 
             } else {
 
-                $this->didLoginAttemtpSucces(false);
-
+                $this->wasLogInSuccesFull = false;
             }
-        }
-    }
-
-    public function doesUserExist()
-    {
-        if ($this->db->rowCount() > 0) {
-            return true;
-        } else {
-            return false;
         }
     }
 
@@ -58,16 +43,8 @@ class LoginModel
         }
     }
 
-    public function didLoginAttemtpSucces($loginResult)
-    {
-        $this->wasLogInSuccesFull = $loginResult;
-    }
-
     public function checkIfLoginSuccess()
     {
-        if ($this->wasLogInSuccesFull === true) {
-            $this->session->setToLoggedIn(true);
-        }
         return $this->wasLogInSuccesFull;
     }
 }

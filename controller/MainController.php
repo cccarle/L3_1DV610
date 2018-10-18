@@ -6,9 +6,9 @@ class MainController
 {
     private $layoutView;
     private $loginController;
-    private $sessionModel;
     private $registerController;
     private $gameController;
+    private $sessionModel;
 
     public function __construct(
         \view\LayoutView $layoutView,
@@ -16,21 +16,21 @@ class MainController
         \controller\RegisterController $registerController,
         \controller\GameController $gameController,
         \model\SessionModel $sessionModel
+
     ) {
         $this->loginController = $loginController;
         $this->registerController = $registerController;
         $this->layoutView = $layoutView;
-        $this->sessionModel = $sessionModel;
         $this->gameController = $gameController;
-
+        $this->sessionModel = $sessionModel;
     }
 
-    public function render(): void
+    public function render()
     {
         $this->loginController->initialize();
         $this->registerController->initialize();
         $this->gameController->initialize();
-
+        
         $this->layoutView->render($this->sessionModel->checkIfLoggedIn());
     }
 }

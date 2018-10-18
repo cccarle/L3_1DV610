@@ -8,6 +8,7 @@ class LayoutView
     private $loginView;
     private $registerView;
     private $gameView;
+    private $sessionModel;
 
     private $register_link = "register";
 
@@ -22,28 +23,26 @@ class LayoutView
     public function render(bool $isLoggedIn)
     {
         echo '<!DOCTYPE html>
-      <html>
+        <html>
         <head>
-          <meta charset="utf-8">
-          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-          <title>Login Example</title>
+            <meta charset="utf-8">
+            <title>Login Example</title>
         </head>
+
         <body>
 
-          <h1>Assignment 2</h1>
+        <h1>Assignment 2</h1>
 
-          ' . $this->renderNavLinks($isLoggedIn) . '
-          ' . $this->renderIsLoggedIn($isLoggedIn) . '
+        ' . $this->renderNavLinks($isLoggedIn) . '
 
-          <div class="container">
-              ' . $this->renderViews($isLoggedIn) . '
-              ' . $this->renderGameView($isLoggedIn) . '
-              ' . $this->dateTime->showTime() . '
-          </div>
+        ' . $this->renderIsLoggedIn($isLoggedIn) . '
 
-         </body>
-      </html>
+                ' . $this->renderViews($isLoggedIn) . '
+
+    
+                ' . $this->dateTime->showTime() . '
+        </body>
+        </html>
     ';
     }
 
@@ -59,9 +58,9 @@ class LayoutView
     private function renderIsLoggedIn($isLoggedIn)
     {
         if ($isLoggedIn) {
-            return '<h2>Logged in</h2>';
+            return '<h2 >Logged in</h2>';
         } else {
-            return '<h2>Not logged in</h2>';
+            return '<h2 >Not logged in</h2>';
         }
     }
 
@@ -79,7 +78,7 @@ class LayoutView
         return isset($_GET[$this->register_link]);
     }
 
-    private function renderGameView($isLoggedIn)
+    private function renderGameView()
     {
         if ($isLoggedIn) {
             return $this->gameView->render();

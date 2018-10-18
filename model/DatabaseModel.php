@@ -4,7 +4,7 @@ namespace model;
 
 use PDO;
 
-class Database
+class DatabaseModel
 {
     private $databaseHandler;
     private $statement;
@@ -14,21 +14,21 @@ class Database
     public function __construct()
     {
         $this->config = new \Config\Config();
-        $this->createNewPDO();
+        $this->createNewPDOInstance();
     }
 
-    private function createNewPDO()
+    private function createNewPDOInstance()
     {
 
         $this->dsn = 'mysql:host=' . $this->config->dbHost() . ';dbname=' . $this->config->dbName();
 
         $options = array(
-            PDO::ATTR_PERSISTENT => true, // Persistent connection -increase preformance
+            PDO::ATTR_PERSISTENT => true, // Persistent connection - increase preformance
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // Handle errors
         );
 
         try {
-            $this->databaseHandler = new PDO($this->dsn, $this->config->dbUsername(), $this->config->dbPassword());
+            $this->databaseHandler = new PDO($this->dsn, $this->config->dbUsername(), $this->config->dbPassword(), $options);
         } catch (PDOExeption $error) {
             $this->error = $error->getMessage();
             echo $this->error;
@@ -42,6 +42,7 @@ class Database
     }
 
     // Bind values & check which type is passed in
+    // http://php.net/manual/en/pdostatement.bindvalue.php
     public function bind($param, $value, $type = null)
     {
         if (is_null($type)) {
@@ -59,6 +60,7 @@ class Database
                     $type = PDO::PARAM_STR;
             }
         }
+
         $this->statement->bindValue($param, $value, $type);
     }
 
@@ -72,6 +74,7 @@ class Database
     public function single()
     {
         $this->execute();
+
         return $this->statement->fetch(PDO::FETCH_OBJ);
     }
 

@@ -4,14 +4,13 @@ namespace model;
 
 class GameModel
 {
-    private static $randomWord = "gameModel::randomWord";
+    private static $randomNumber = "gameModel::randomWord";
 
     private $isMatch;
     private $numberToLow;
     private $numberToHigh;
     private $numberOfTries;
 
-    
     private $sessionModel;
 
     public function __construct($sessionModel)
@@ -21,12 +20,12 @@ class GameModel
 
     public function generateRandomNumber()
     {
-        return self::$randomWord = rand(0, 20);
+        self::$randomNumber = rand(0, 20);
     }
 
     public function storeRandomNumber()
     {
-        $this->sessionModel->setMagicNumberSession(self::$randomWord);
+        $this->sessionModel->setMagicNumberSession(self::$randomNumber);
     }
 
     public function checkIfMatch($guessedNumber)
@@ -57,9 +56,5 @@ class GameModel
     public function numberWasToLow()
     {
         return $this->numberToLow;
-    }
-
-    public function countTries(){
-
     }
 }

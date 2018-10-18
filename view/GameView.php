@@ -77,7 +77,7 @@ class GameView
     private function renderInputForm($message) : string
     {
         return '
-        <div class="container py-5 mt-5 col-5">
+        <div class="container py-5 mt-5 col-12">
         <form method="POST" class="form">
 
           <div class="form-group">

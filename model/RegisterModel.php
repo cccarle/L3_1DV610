@@ -4,7 +4,7 @@ namespace model;
 
 class RegisterModel
 {
-    private $db;
+    private $database;
     private $username;
     private $password;
     private $wasregSuccesFull;
@@ -12,38 +12,49 @@ class RegisterModel
 
     public function __construct($database)
     {
-        $this->db = $database;
+        $this->database = $database;
     }
 
     public function register($username, $password)
     {
-        $this->db->query('SELECT * FROM users WHERE user_username = :user_username');
-        $this->db->bind(':user_username', $username);
+        $this->database->query('SELECT * FROM users WHERE user_username = :user_username');
+        $this->database->bind(':user_username', $username);
 
-        $row = $this->db->single();
-        // check that the row has an user found with the provide username
-        if ($this->db->rowCount() > 0) {
+        $row = $this->database->single();
+
+        if ($this->isUsernameIsTaken()) {
 
             $this->isUsernameTaken = true;
             $this->wasregSuccesFull = false;
-    
-        } else{
+
+        } else {
 
             $password = password_hash($password, PASSWORD_BCRYPT);
-            $this->db->query('INSERT INTO users(user_username,user_password) VALUES(:user_username,:user_password)');
+            $this->database->query('INSERT INTO users(user_username,user_password) VALUES(:user_username,:user_password)');
             // Bind values
-            $this->db->bind(':user_username', $username);
-            $this->db->bind(':user_password', $password);
+            $this->database->bind(':user_username', $username);
+            $this->database->bind(':user_password', $password);
 
-            if ($this->db->execute()) {
-              
-                $this->wasregSuccesFull = true;
-
-            }
+            $this->regWasSucessfull();
         }
     }
 
-    public function wasRegSuccess (){
+    public function isUsernameIsTaken()
+    {
+        if ($this->database->rowCount() > 0) {
+            return true;
+        }
+    }
+
+    private function regWasSucessfull()
+    {
+        if ($this->database->execute()) {
+            $this->wasregSuccesFull = true;
+        }
+    }
+
+    public function wasRegSuccess()
+    {
         return $this->wasregSuccesFull;
     }
 
@@ -51,6 +62,5 @@ class RegisterModel
     {
         return $this->isUsernameTaken;
     }
-
 
 }

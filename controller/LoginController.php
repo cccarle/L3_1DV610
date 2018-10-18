@@ -19,6 +19,7 @@ class LoginController
     {
         $this->checkIfUserWantToLogIn();
         $this->checkIfUserWantToLogout();
+        $this->checkIfUserWasLoggedIn();
     }
 
     private function checkIfUserWantToLogIn(): void
@@ -32,6 +33,13 @@ class LoginController
     {
         if ($this->sessionModel->checkIfLoggedIn() && $this->loginView->isLogOutButtonPressed()) {
             $this->logutUser();
+        }
+    }
+
+    private function checkIfUserWasLoggedIn()
+    {
+        if ($this->loginModel->checkIfLoginSuccess()) {
+            $this->sessionModel->setToLoggedIn(true);
         }
     }
 

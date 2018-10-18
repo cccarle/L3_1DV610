@@ -32,20 +32,37 @@ class RegisterView
     private function generateRegisterFormHTML($message): string
     {
         return '
-			<form method="post"  >
-				<fieldset>
-					<legend>Register a new user - Enter Username and password</legend>
-					<p id="' . self::$messageId . '">' . $message . '</p>
-					<label for="' . self::$name . '">Username :</label>
-					<input type="text" name="' . self::$name . '"  id="' . self::$name . '" value="' . $this->getUserName() . '" />
-					<label for="' . self::$password . '">Password :</label>
-                    <input type="password" id="' . self::$password . '" name="' . self::$password . '" />
-					<label for="' . self::$passwordRepeat . '"> Repeat password :</label>
-                    <input type="password" id="' . self::$passwordRepeat . '" name="' . self::$passwordRepeat . '" />
-					<input type="submit" name="' . self::$register . '" value="Register" />
-				</fieldset>
-			</form>
-		';
+        <div class="container py-5 mt-5">
+        <form method="POST" class="form">
+            <fieldset>
+
+                <legend class="h1">Register a new user - Enter Username and password</legend>
+
+                <p id="' . self::$messageId . '">' . $message . '</p>
+
+                <div class="form-group">
+                    <label for="' . self::$name . '">Username :</label>
+                    <input type="text" class="form-control" name="' . self::$name . '" id="' . self::$name . '" value="' . $this->getUserName() . '" />
+                </div>
+
+                <div class="form-group">
+
+                    <label for="' . self::$password . '">Password :</label>
+
+                    <input type="password" class="form-control" id="' . self::$password . '" name="' . self::$password . '" />
+                </div>
+
+                <div class="form-group">
+
+                    <label for="' . self::$passwordRepeat . '"> Repeat password :</label>
+                    <input type="password" class="form-control" id="' . self::$passwordRepeat . '" name="' . self::$passwordRepeat . '" />
+
+                </div>
+                <input type="submit" class="btn btn-primary" name="' . self::$register . '" value="Register" />
+            </fieldset>
+        </form>
+    </div>
+    ';
     }
 
     private function showResponseMessage(): string
@@ -63,7 +80,7 @@ class RegisterView
             }
 
             if ($this->getUserPassword() != $this->getUserPasswordRepeat()) {
-                $message .= 'Password do not match. <br>';
+                $message .= 'Passwords do not match. <br>';
             }
 
             if (!$this->registerModel->wasRegSuccess() && $this->registerModel->isUsernameTaken()) {

@@ -7,15 +7,6 @@ A course for better understanding of code quality
 
   - Authenticate module - login - register 
 
-# 1DV610
-
-Assigment L3. Requirements and Code Quality <br>
-A course for better understanding of code quality
-
-### Features
-
-  - Authenticate module - login - register 
-  - Connection to database
 
 ### Software Architecture
  - MVC

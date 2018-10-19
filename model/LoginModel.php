@@ -31,6 +31,15 @@ class LoginModel
         }
     }
 
+    public function doesUserExist()
+    {
+        if ($this->db->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private function getHasedPasswordFromDB($row)
     {
         return $row->user_password;
@@ -45,6 +54,7 @@ class LoginModel
 
     public function checkIfLoginSuccess()
     {
+
         return $this->wasLogInSuccesFull;
     }
 }

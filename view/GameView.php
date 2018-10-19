@@ -16,7 +16,7 @@ class GameView
     private $sessionModel;
     private $message;
 
-    public function __construct($gameModel,$sessionModel)
+    public function __construct($gameModel, $sessionModel)
     {
         $this->gameModel = $gameModel;
         $this->sessionModel = $sessionModel;
@@ -36,13 +36,15 @@ class GameView
         return $this->renderGameDescription();
     }
 
+    // TODO första gången sidan laddas ska de inte bli en POST
+
     public function responseMessage(): string
     {
 
         $message = '';
 
-        if ($this->getGuessedNumber() === null) {
-            $message = '';
+        if (empty($this->getGuessedNumber())) {
+            $message = 'no number was entered';
         } elseif (!is_numeric($this->getGuessedNumber())) {
             $message = 'Only numbers allowed';
         } elseif ($this->getGuessedNumber() > self::NUMBER_HIGHER_THEN_TWENTY) {
@@ -60,7 +62,7 @@ class GameView
         return $message;
     }
 
-    private function renderGameDescription() : string
+    private function renderGameDescription(): string
     {
         return '
         <div class="container py-5 mt-5">
@@ -74,7 +76,7 @@ class GameView
         ';
     }
 
-    private function renderInputForm($message) : string
+    private function renderInputForm($message): string
     {
         return '
         <div class="container py-5 mt-5 col-12">
@@ -85,7 +87,7 @@ class GameView
           </div>
 
           <div class="form-group">
-            <input type="text" class="form-control shadow-lg p-3 mb-5 bg-white rounded col-4" name="' . self::$guessedNumber . '" id="' . self::$guessedNumber . '">
+            <input type="text"  name="' . self::$guessedNumber . '" id="' . self::$guessedNumber . '">
           </div>
 
           <p>' . $message . '</p>
@@ -97,7 +99,7 @@ class GameView
         ';
     }
 
-    private function renderButton() : string
+    private function renderButton(): string
     {
         if ($this->gameModel->isMatch()) {
             return '<input type="submit" class="btn btn-info" name="' . self::$playAgainButton . '" value="Play Again" />';

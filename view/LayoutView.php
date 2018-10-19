@@ -37,9 +37,10 @@ class LayoutView
 
         ' . $this->renderIsLoggedIn($isLoggedIn) . '
 
+        ' . $this->renderGameView($isLoggedIn) . '
+
                 ' . $this->renderViews($isLoggedIn) . '
 
-    
                 ' . $this->dateTime->showTime() . '
         </body>
         </html>
@@ -78,7 +79,7 @@ class LayoutView
         return isset($_GET[$this->register_link]);
     }
 
-    private function renderGameView()
+    private function renderGameView($isLoggedIn)
     {
         if ($isLoggedIn) {
             return $this->gameView->render();

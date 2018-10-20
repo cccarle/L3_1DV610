@@ -43,7 +43,7 @@ Change the file "config-default.php" to "config.php"
     
 ```
 
-###### 4. Create a table called users in your mysql database
+###### 4. Create two tables called users & highScore in your mysql database
 
 ```javascript
 CREATE TABLE `users` (
@@ -53,6 +53,17 @@ CREATE TABLE `users` (
   `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
+
+```javascript
+CREATE TABLE `highScore` (
+  `name` varchar(10) NOT NULL,
+  `score` int(5) NOT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id` int(8) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
+
+
 ### Observations
 #### Changes
 
@@ -104,17 +115,19 @@ If the user is logged in a small game based on guessing a secret number will be 
 5. The user has guessed the right number & the system provide a message to the user "You guessed right on "x-amount" of tries".
 
 #### Use case 7 - User want to play again
-1. User has guessed the correct secret number
+1. User has guessed the correct secret number.
 2. System has provided a message with amount of tries it took to guess the secret number.
 3. The "make a guess" button is replaced with a "Play again" button.
 4. User click on the "Play again" button and is redirected back to "description of the game"/ use case 1 - start a new game, page.
 
 #### Use case 8 - User want to save their attemps of trys in a high score
-1. TODO
+1. User has guessed the correct secret number
+2. System has provided a message with amount of tries it took to guess the secret number.
+3. The system provide two buttons, one "Play again" and one "add to high score" button. 
+4. The user click on "add to high score" button and the system will present an highscore with the users result.
 
 ### Status
-The application fulfills use case 1-7, 
+The application fulfills use case 1-8, 
 
 ### Todos
-* Implement Use case 8 - User want to save their attemps of trys in a highscore
 * Implement expetions

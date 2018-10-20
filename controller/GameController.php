@@ -7,18 +7,21 @@ class GameController
     private $gameView;
     private $gameModel;
     private $sessionModel;
+    private $highScoreModel;
 
-    public function __construct($gameView, $gameModel, $sessionModel)
+    public function __construct($gameView, $gameModel, $sessionModel,$highScoreModel)
     {
         $this->gameView = $gameView;
         $this->gameModel = $gameModel;
         $this->sessionModel = $sessionModel;
+        $this->highScoreModel = $highScoreModel;
     }
 
     public function initialize(): void
     {
         $this->checkIfUserWantToStartNewGame();
         $this->checkIfUserWantToMakeAGuess();
+        $this->checkIfUserWantToSaveHighScore();
     }
 
     private function checkIfUserWantToStartNewGame(): void
@@ -34,6 +37,16 @@ class GameController
             $this->checkIfMatch();
         }
     }
+
+
+    private function checkIfUserWantToSaveHighScore(): void
+    {
+        if ($this->gameView->isAddToHighScoreButtonPressed()) {
+            $this->highScoreModel->addHighScoreToDatabase($this->sessionModel->getSessionUsername(), $this->sessionModel->getNumberOfTries());
+            $this->highScoreModel->getHighScore();
+        }
+    }
+
 
     private function startNewGame(): void
     {

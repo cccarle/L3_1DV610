@@ -5,7 +5,8 @@ namespace model;
 class SessionModel
 {
     private static $isLoggedIn = "sessionModel::isLoggedIn";
-    private static $magicWord = "sessionModel::magicWord";
+    private static $sessionUsername = "sessionModel::sessionUsername";
+    private static $magicWord = "sessionModel::magicWord"; // change this to magic number
     private static $numberOfTries = "sessionModel::0";
 
     public function setToLoggedIn($isLoggedIn)
@@ -21,6 +22,19 @@ class SessionModel
     public function logoutUser()
     {
         unset($_SESSION[self::$isLoggedIn]);
+        unset($_SESSION[self::$sessionUsername]);
+    }
+
+    public function setSessionUsername($sessionUsername)
+    {
+        return $_SESSION[self::$sessionUsername] = $sessionUsername;
+    }
+
+    public function getSessionUsername()
+    {
+        if (isset($_SESSION[self::$sessionUsername])) {
+            return $_SESSION[self::$sessionUsername];
+        }
     }
 
     public function setMagicNumberSession($magicWord)

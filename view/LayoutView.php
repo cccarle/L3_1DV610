@@ -12,15 +12,16 @@ class LayoutView
 
     private $register_link = "register";
 
-    public function __construct(\view\LoginView $loginView, \view\RegisterView $registerView, \view\GameView $gameView)
+    public function __construct(\view\LoginView $loginView, \view\RegisterView $registerView, \view\GameView $gameView, \model\SessionModel $sessionModel)
     {
         $this->dateTime = new \view\DateTimeView();
         $this->loginView = $loginView;
         $this->registerView = $registerView;
         $this->gameView = $gameView;
+        $this->sessionModel = $sessionModel;
     }
 
-    public function render(bool $isLoggedIn)
+    public function render()
     {
         echo '<!DOCTYPE html>
         <html>
@@ -33,13 +34,13 @@ class LayoutView
 
         <h1>Assignment 2</h1>
 
-        ' . $this->renderNavLinks($isLoggedIn) . '
+        ' . $this->renderNavLinks() . '
 
-        ' . $this->renderIsLoggedIn($isLoggedIn) . '
+        ' . $this->renderIsLoggedIn() . '
 
-        ' . $this->renderGameView($isLoggedIn) . '
+        ' . $this->renderGameView() . '
 
-                ' . $this->renderViews($isLoggedIn) . '
+                ' . $this->renderViews() . '
 
                 ' . $this->dateTime->showTime() . '
         </body>
@@ -47,19 +48,19 @@ class LayoutView
     ';
     }
 
-    private function renderNavLinks($isLoggedIn)
+    private function renderNavLinks()
     {
         if ($this->userWantToRegister()) {
             return '<a href="?">Back to login</a>';
-        } elseif (!$isLoggedIn) {
+        } elseif (!$this->sessionModel->checkIfLoggedIn()) {
             return '<a href="/L3_1dv610/?' . $this->register_link . '">Register a new user</a>';
         }
     }
 
-    private function renderIsLoggedIn($isLoggedIn)
+    private function renderIsLoggedIn()
     {
-        if ($isLoggedIn) {
-            return '<h2 >Logged in</h2>';
+        if ($this->sessionModel->checkIfLoggedIn()) {
+            return '<h2 >Logged in as : '. $this->sessionModel->getSessionUsername() .'</h2>';
         } else {
             return '<h2 >Not logged in</h2>';
         }
@@ -79,9 +80,9 @@ class LayoutView
         return isset($_GET[$this->register_link]);
     }
 
-    private function renderGameView($isLoggedIn)
+    private function renderGameView()
     {
-        if ($isLoggedIn) {
+        if ($this->sessionModel->checkIfLoggedIn()) {
             return $this->gameView->render();
         }
     }

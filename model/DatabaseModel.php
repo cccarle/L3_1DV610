@@ -65,9 +65,16 @@ class DatabaseModel
     }
 
     // Execute the prepared statment
-    public function execute()
+    public function execute(): bool
     {
         return $this->statement->execute();
+    }
+
+    // Get result set as array of objects
+    public function resultSet()
+    {
+        $this->execute();
+        return $this->statement->fetchAll(PDO::FETCH_OBJ);
     }
 
     // Get single record as object

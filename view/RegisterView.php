@@ -12,8 +12,8 @@ class RegisterView
     private static $keep = 'RegisterView::KeepMeLoggedIn';
     private static $messageId = 'RegisterView::Message';
 
-    private const PASSWORD_LENGTH_LESS_THEN_THREE = 3;
-    private const USERNAME_LENGTH_LESS_THEN_SIX = 6;
+    private const PASSWORD_LENGTH_LESS_THAN_THREE = 3;
+    private const USERNAME_LENGTH_LESS_THAN_SIX = 6;
 
     private $registerModel;
 
@@ -32,36 +32,19 @@ class RegisterView
     private function generateRegisterFormHTML($message): string
     {
         return '
-        <div class="container py-5 mt-5">
-        <form method="POST" class="form">
-            <fieldset>
-
-                <legend class="h1">Register a new user - Enter Username and password</legend>
-
-                <p id="' . self::$messageId . '">' . $message . '</p>
-
-                <div class="form-group">
-                    <label for="' . self::$name . '">Username :</label>
-                    <input type="text" class="form-control" name="' . self::$name . '" id="' . self::$name . '" value="' . $this->getUserName() . '" />
-                </div>
-
-                <div class="form-group">
-
-                    <label for="' . self::$password . '">Password :</label>
-
-                    <input type="password" class="form-control" id="' . self::$password . '" name="' . self::$password . '" />
-                </div>
-
-                <div class="form-group">
-
-                    <label for="' . self::$passwordRepeat . '"> Repeat password :</label>
-                    <input type="password" class="form-control" id="' . self::$passwordRepeat . '" name="' . self::$passwordRepeat . '" />
-
-                </div>
-                <input type="submit" class="btn btn-primary" name="' . self::$register . '" value="Register" />
-            </fieldset>
-        </form>
-    </div>
+        <form method="post"  >
+        <fieldset>
+            <legend>Register a new user - Enter Username and password</legend>
+            <p id="' . self::$messageId . '">' . $message . '</p>
+            <label for="' . self::$name . '">Username :</label>
+            <input type="text" name="' . self::$name . '"  id="' . self::$name . '" value="' . $this->getUserName() . '" />
+            <label for="' . self::$password . '">Password :</label>
+            <input type="password" id="' . self::$password . '" name="' . self::$password . '" />
+            <label for="' . self::$passwordRepeat . '"> Repeat password :</label>
+            <input type="password" id="' . self::$passwordRepeat . '" name="' . self::$passwordRepeat . '" />
+            <input type="submit" name="' . self::$register . '" value="Register" />
+        </fieldset>
+    </form>
     ';
     }
 
@@ -71,11 +54,11 @@ class RegisterView
 
         if ($this->isRegisterButtonPressed()) {
 
-            if (strlen($this->getUserName()) < self::PASSWORD_LENGTH_LESS_THEN_THREE) {
+            if (strlen($this->getUserName()) < self::PASSWORD_LENGTH_LESS_THAN_THREE) {
                 $message .= 'Username has too few characters, at least 3 characters. <br>';
             }
 
-            if (strlen($this->getUserPassword()) < self::USERNAME_LENGTH_LESS_THEN_SIX) {
+            if (strlen($this->getUserPassword()) < self::USERNAME_LENGTH_LESS_THAN_SIX) {
                 $message .= 'Password has too few characters, at least 6 characters. <br>';
             }
 

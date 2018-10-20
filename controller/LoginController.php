@@ -36,10 +36,11 @@ class LoginController
         }
     }
 
-    private function checkIfUserWasLoggedIn()
+    private function checkIfUserWasLoggedIn(): void
     {
         if ($this->loginModel->checkIfLoginSuccess()) {
             $this->sessionModel->setToLoggedIn(true);
+            $this->sessionModel->setSessionUsername($this->loginView->getRequestUserName());
         }
     }
 

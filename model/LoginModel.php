@@ -9,52 +9,43 @@ class LoginModel
 
     public function __construct($database)
     {
-        $this->db = $database;
+        $this->database = $database;
     }
 
     public function login($username, $password)
     {
-        $this->db->query('SELECT * FROM users WHERE user_username = :user_username');
-        $this->db->bind(':user_username', $username);
+        if ($this->isUsernameInDatabase($username) && $this->isHashedPasswordMatchWithPasswordInput($password)) {
 
-        $row = $this->db->single();
+            $this->wasLogInSuccesFull = true;
 
-        if ($this->db->rowCount() > 0) {
-            if ($this->matchHashedPasswordWithInputPassword($password, $this->getHasedPasswordFromDB($row))) {
-
-                $this->wasLogInSuccesFull = true;
-
-            } else {
-
-                $this->wasLogInSuccesFull = false;
-            }
-        }
-    }
-
-    public function doesUserExist()
-    {
-        if ($this->db->rowCount() > 0) {
-            return true;
         } else {
-            return false;
+
+            $this->wasLogInSuccesFull = false;
+
         }
     }
 
-    private function getHasedPasswordFromDB($row)
+    private function isUsernameInDatabase($username): bool
     {
-        return $row->user_password;
+        $this->database->query('SELECT * FROM users WHERE user_username = :user_username');
+        $this->database->bind(':user_username', $username);
+        $this->getRowInDatabase();
+
+        return $this->database->rowCount() > 0;
     }
 
-    private function matchHashedPasswordWithInputPassword($password, $hashed_password)
+    private function isHashedPasswordMatchWithPasswordInput($password)
     {
-        if (password_verify($password, $hashed_password)) {
-            return true;
-        }
+        return password_verify($password, $this->getRowInDatabase()->user_password);
+    }
+
+    private function getRowInDatabase()
+    {
+        return $row = $this->database->single();
     }
 
     public function checkIfLoginSuccess()
     {
-
         return $this->wasLogInSuccesFull;
     }
 }

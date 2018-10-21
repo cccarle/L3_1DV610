@@ -66,7 +66,7 @@ class RegisterView
                 $message .= 'Passwords do not match. <br>';
             }
 
-            if (!$this->registerModel->wasRegSuccess() && $this->registerModel->isUsernameTaken()) {
+            if (!$this->registerModel->isRegistrationSuccess() && $this->registerModel->isUsernameTaken()) {
                 $message .= 'User exists, pick another username. <br>';
             }
         } else {

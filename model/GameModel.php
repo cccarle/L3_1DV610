@@ -4,7 +4,7 @@ namespace model;
 
 class GameModel
 {
-    private static $randomNumber = "gameModel::randomWord";
+    private static $randomNumber = "gameModel::0";
 
     private $isMatch;
     private $numberToLow;

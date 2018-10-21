@@ -5,8 +5,6 @@ namespace model;
 class RegisterModel
 {
     private $database;
-    private $username;
-    private $password;
     private $wasregSuccesFull;
     private $isUsernameTaken;
 
@@ -15,45 +13,36 @@ class RegisterModel
         $this->database = $database;
     }
 
-    public function register($username, $password)
+    public function registerAttempt($username, $password): void
+    {
+        if ($this->isUsernameAvailable($username)) {
+            $this->isUsernameTaken = true;
+            $this->wasregSuccesFull = false;
+        } else {
+            $this->registerNewUser($username, $password);
+        }
+    }
+
+    private function registerNewUser($username, $password): void
+    {
+        $password = password_hash($password, PASSWORD_BCRYPT);
+        $this->database->query('INSERT INTO users(user_username,user_password) VALUES(:user_username,:user_password)');
+        $this->database->bind(':user_username', $username);
+        $this->database->bind(':user_password', $password);
+        $this->database->execute();
+        $this->wasregSuccesFull = false;
+    }
+
+    private function isUsernameAvailable($username): bool
     {
         $this->database->query('SELECT * FROM users WHERE user_username = :user_username');
         $this->database->bind(':user_username', $username);
-
         $row = $this->database->single();
 
-        if ($this->isUsernameIsTaken()) {
-
-            $this->isUsernameTaken = true;
-            $this->wasregSuccesFull = false;
-
-        } else {
-
-            $password = password_hash($password, PASSWORD_BCRYPT);
-            $this->database->query('INSERT INTO users(user_username,user_password) VALUES(:user_username,:user_password)');
-            // Bind values
-            $this->database->bind(':user_username', $username);
-            $this->database->bind(':user_password', $password);
-
-            $this->regWasSucessfull();
-        }
+        return $this->database->rowCount() > 0;
     }
 
-    public function isUsernameIsTaken()
-    {
-        if ($this->database->rowCount() > 0) {
-            return true;
-        }
-    }
-
-    private function regWasSucessfull()
-    {
-        if ($this->database->execute()) {
-            $this->wasregSuccesFull = true;
-        }
-    }
-
-    public function wasRegSuccess()
+    public function isRegistrationSuccess()
     {
         return $this->wasregSuccesFull;
     }

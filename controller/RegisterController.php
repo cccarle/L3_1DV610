@@ -28,6 +28,6 @@ class RegisterController
 
     private function newRegisterAttemp(): void
     {
-        $this->registerModel->register($this->registerView->getUserName(), $this->registerView->getUserPassword());
+        $this->registerModel->registerAttempt($this->registerView->getUserName(), $this->registerView->getUserPassword());
     }
 }

@@ -19,7 +19,6 @@ class GameView
     private $gameModel;
     private $sessionModel;
     private $highScoreModel;
-    private $message;
 
     public function __construct($gameModel, $sessionModel, $highScoreModel)
     {
@@ -33,43 +32,43 @@ class GameView
 
         $message = $this->responseMessage();
 
-        if ($this->isStartGameButtonPressed()) {
+        if ($this->isStartGameButtonPressed() || $this->isMakeGuessButtonPressed()) {
             return $this->renderInputForm($message);
-        } elseif ($this->isMakeGuessButtonPressed()) {
-            return $this->renderInputForm($message);
-        } elseif ($this->isShowHighScoreGameButtonPressed() || $this->isAddToHighScoreButtonPressed()) {
+        }
+
+        if ($this->isShowHighScoreGameButtonPressed() || $this->isAddToHighScoreButtonPressed()) {
             return $this->showHighScore();
         }
+
         return $this->renderGameDescription();
     }
 
-    // TODO första gången sidan laddas ska de inte bli en
-
-    public function responseMessage(): string
+    private function responseMessage(): string
     {
 
         $message = '';
 
-        if (empty($this->getGuessedNumber())) {
-            $message = 'no number was entered';
-        } elseif (!is_numeric($this->getGuessedNumber())) {
-            $message = 'Only numbers allowed';
-        } elseif ($this->getGuessedNumber() > self::NUMBER_HIGHER_THEN_TWENTY) {
-            $message = 'The number is higher then 20 <br> Only numbers between 1-20 is allowed';
-        } elseif ($this->getGuessedNumber() < self::NUMBER_LOWER_THEN_ONE) {
-            $message = 'The number is lower then 1 <br> Only numbers between 1-20 is allowed';
-        } elseif ($this->gameModel->numberWasToLow()) {
-            $message = 'Your number was to low';
-        } elseif ($this->gameModel->numberWasToHigh()) {
-            $message = 'Your number was to high';
-        } elseif ($this->gameModel->isMatch()) {
-            $message = 'You guessed right on ' . $this->sessionModel->getNumberOfTries() . ' tries';
+        if ($this->isMakeGuessButtonPressed()) {
+            if (empty($this->getGuessedNumber())) {
+                $message = 'no number was entered';
+            } elseif (!is_numeric($this->getGuessedNumber())) {
+                $message = 'Only numbers allowed';
+            } elseif ($this->getGuessedNumber() > self::NUMBER_HIGHER_THEN_TWENTY) {
+                $message = 'The number is higher then 20 <br> Only numbers between 1-20 is allowed';
+            } elseif ($this->getGuessedNumber() < self::NUMBER_LOWER_THEN_ONE) {
+                $message = 'The number is lower then 1 <br> Only numbers between 1-20 is allowed';
+            } elseif ($this->gameModel->numberWasToLow()) {
+                $message = 'Your number was to low';
+            } elseif ($this->gameModel->numberWasToHigh()) {
+                $message = 'Your number was to high';
+            } elseif ($this->gameModel->isMatch()) {
+                $message = 'You guessed right on ' . $this->sessionModel->getNumberOfTries() . ' tries';
+            }
         }
-
         return $message;
     }
 
-    private function renderGameDescription(): string
+    public function renderGameDescription(): string
     {
         return '
         <div class="container py-5 mt-5">
@@ -87,59 +86,64 @@ class GameView
 
     private function renderInputForm($message): string
     {
-        return '
-        <div class="container py-5 mt-5 col-12">
-        <form method="POST" class="form">
-
-          <div class="form-group">
-            <p type="text" class="display-4" id="">Enter a number between 1-20 </p>
-          </div>
-
-          <div class="form-group">
-            <input type="text"  name="' . self::$guessedNumber . '" id="' . self::$guessedNumber . '">
-          </div>
-
-          <p>' . $message . '</p>
-
-          ' . $this->renderButton() . '
-
-          </form>
-        </div>
-        ';
+        return '' . $this->gameContainer($message) . '';
     }
 
-    private function renderButton(): string
+    private function gameContainer($message): string
     {
         if ($this->gameModel->isMatch()) {
+
             return '
-            <input type="submit" class="btn btn-info" name="' . self::$playAgainButton . '" value="Play Again" />
-            <input type="submit" class="btn btn-info" name="' . self::$addToHighScoreButton . '" value="Add to highscore" />
-            ';
+
+    <form method="POST" class="form">
+        <h1> Congratulation </h1>
+        <p>' . $message . '</p>
+        <input type="submit" class="btn btn-info" name="' . self::$playAgainButton . '" value="Play Again" />
+        <input type="submit" class="btn btn-info" name="' . self::$addToHighScoreButton . '" value="Add to highscore" />
+    </form>
+
+    ';
+
         } else {
+
             return '
+    <div class="container py-5 mt-5 col-12">
+        <form method="POST" class="form">
+
+            <div class="form-group">
+                <p type="text" class="display-4" id="">Enter a number between 1-20 </p>
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="' . self::$guessedNumber . '" id="' . self::$guessedNumber . '" autocomplete="off">
+            </div>
+
+            <p>' . $message . '</p>
+
             <input type="submit" class="btn btn-info" name="' . self::$makeGuessButton . '" value="Make a guess" />
             <input type="submit" class="btn btn-info" name="' . self::$goBackButton . '" value="Go to Start" />
-            ';
+
+        </form>
+    </div>
+    ';
         }
     }
 
     private function showHighScore(): string
     {
+        $row = '';
 
-        $ret = '';
-
-        foreach ($this->highScoreModel->getHighScore() as $key) {
-            $ret .= "$key <br>";
+        foreach ($this->highScoreModel->getHighScore() as $highScoreRow) {
+            $row .= "$highScoreRow <br>";
         }
 
         return '
         <form method="POST" class="form">
-
             <h2> Top 10 High Score</h2>
-            <h2>Name  Tries Date</h2>
-            <h3> ' . $ret . '</h3>
+            <h2>Name Tries Date</h2>
+            <h3> ' . $row . '</h3>
             <input type="submit" class="btn btn-info" name="' . self::$goBackButton . '" value="Go to Start" />
-</form>
+        </form>
         ';
     }
 

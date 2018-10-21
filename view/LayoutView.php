@@ -40,9 +40,9 @@ class LayoutView
 
         ' . $this->renderGameView() . '
 
-                ' . $this->renderViews() . '
+        ' . $this->renderViews() . '
 
-                ' . $this->dateTime->showTime() . '
+        ' . $this->dateTime->showTime() . '
         </body>
         </html>
     ';

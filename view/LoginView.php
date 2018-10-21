@@ -62,6 +62,7 @@ class LoginView
     </form>
 		';
     }
+
     private function showResponseMessage()
     {
         $message = '';
@@ -73,14 +74,11 @@ class LoginView
             if (empty($this->getRequestUserPassword())) {
                 return $message .= 'Password is missing';
             }
-            if (!$this->loginModel->doesUserExist()) {
-                return $message .= 'User do not exist';
-            }
             if (!$this->loginModel->checkIfLoginSuccess()) {
                 return $message .= 'Wrong name or password';
             }
         }
-        
+
         if ($this->loginModel->checkIfLoginSuccess()) {
             return $message .= 'Welcome';
         }
@@ -91,6 +89,8 @@ class LoginView
 
         return $message;
     }
+
+    
     public function isLogOutButtonPressed()
     {
         return isset($_POST[self::$logout]);

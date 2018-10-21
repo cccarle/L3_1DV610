@@ -1,11 +1,17 @@
 # 1DV610
-
+# Introduction
 Assigment L3. Requirements and Code Quality <br>
 A course for better understanding of code quality
 
+1. Installation
+2. Additional Requirements
+3. Status
+4. Use cases
+5. Manual tests
+
 ### Features
 
-  - Authenticate module - login - register 
+  * login/register module 
 
 
 ### Software Architecture
@@ -16,8 +22,9 @@ A course for better understanding of code quality
 * [XAMPP](https://www.apachefriends.org/index.html) - To run and test locally.
 * [VSCODE](https://code.visualstudio.com/) - Editor.
 
+<hr> 
 
-### Installation
+# Installation
 
 ###### 1.Clone the repo
 
@@ -34,7 +41,7 @@ Change the file "config-default.php" to "config.php"
 
 ```
 
-###### 3. Add your db credantials to your newly renamed file "config.php"
+###### 3. Add your db credantials to your newly renamed file "config.php" (This will make the gitignore hinder you from uploading your config-file to github.)
 ```javascript
  private $db_host = 'your host';
  private $db_user = 'your db username';
@@ -43,7 +50,7 @@ Change the file "config-default.php" to "config.php"
     
 ```
 
-###### 4. Create two tables called users & highScore in your mysql database
+###### 4. Create two tables called users & highScore in your mysql database. Add id as auto increment and primary key in both tables.
 
 ```javascript
 CREATE TABLE `users` (
@@ -52,7 +59,7 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-```
+``` 
 
 ```javascript
 CREATE TABLE `highScore` (
@@ -63,14 +70,37 @@ CREATE TABLE `highScore` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
 
+<hr>
 
-### Observations
-#### Changes
-
-### Additional Requirements
+# Additional Requirements
 * If the user is logged in a small game based on guessing a secret number will be available.
 * User can choose to add their score in a high score
 * User can view high score list.
+
+<hr>
+
+# Status
+The application fulfills all the additional use cases, but has a bug first time a user want to make a guess and the "addTriesToCounterSession()" is called. It do not effect the application but shows a "Notice" message of the bug. 
+
+#### Todos
+* Fix bug "first time session sets counter for tries". SessionModel.php, line 61. 
+* Handle the navigations in views in a more "cleaner", get rid of all the "ifs"
+* Implement Exceptions.(get rid of all the "ifs" in responseMessage) 
+* Break out showHighScoreHTML from gameView. 
+
+#### Reflection
+After working with this assignment for a couple of weeks and comparing it to assignment 2 in this course i see so much improvement. The workshops has given so much value about how other people see and read each other's code. It has taught me alot about the MVC architecture and i have tried to follow it as good as i can. 
+
+There are doe some things i would liked to worked more on.
+The navigation in the views has a lot of “ifs” especially the “GameView” and it tends to be a bit messy to follow and the “read it like a newspaper” maybe  . 
+Another thing is to implement exceptions.
+
+Overall im am happy with the outcome.
+
+
+<hr>
+
+# Use cases
 
 #### Use case 1 - User want to start a new game
 1. If user is logged in the user will be shown a description of the game & a "start game" button.
@@ -105,7 +135,8 @@ CREATE TABLE `highScore` (
 2. System has provided a message with amount of tries it took to guess the secret number.
 3. The system provide two buttons, one "Play again" and one "add to high score" button. 
 4. The user click on "add to high score" button and the system will present an highscore with the users result.
-5. 
+
+<hr>
 
 # Manual tests
 ##### Use case tested : Use case 1 - User want to start a new game
@@ -187,8 +218,3 @@ Exptected result : System redirect to highscore page and the users result is add
 Actuall result : System redirect to highscore page and the users result is added to the highscore.
 Pass/fail : Pass
 
-### Status
-The application fulfills use case 1-8, 
-
-### Todos
-* Implement expetions

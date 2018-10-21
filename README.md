@@ -18,6 +18,12 @@ A course for better understanding of code quality
 * https://ce222qw-1dv610.000webhostapp.com/?
 
 
+```sh
+Login credentials
+username: kalle
+password : hejhej
+```
+
 ### Software Architecture
  - MVC
  

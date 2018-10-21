@@ -57,16 +57,16 @@ class LayoutView
         }
     }
 
-    private function renderIsLoggedIn()
+    private function renderIsLoggedIn(): string
     {
         if ($this->sessionModel->checkIfLoggedIn()) {
-            return '<h2 >Logged in as : '. $this->sessionModel->getSessionUsername() .'</h2>';
+            return '<h2 >Logged in as : ' . $this->sessionModel->getSessionUsername() . '</h2>';
         } else {
             return '<h2 >Not logged in</h2>';
         }
     }
 
-    private function renderViews()
+    private function renderViews(): string
     {
         if ($this->userWantToRegister()) {
             return $this->registerView->renderRegisterView();
@@ -75,7 +75,7 @@ class LayoutView
         }
     }
 
-    private function userWantToRegister()
+    private function userWantToRegister(): bool
     {
         return isset($_GET[$this->register_link]);
     }

@@ -9,7 +9,7 @@ class GameController
     private $sessionModel;
     private $highScoreModel;
 
-    public function __construct($gameView, $gameModel, $sessionModel,$highScoreModel)
+    public function __construct($gameView, $gameModel, $sessionModel, $highScoreModel)
     {
         $this->gameView = $gameView;
         $this->gameModel = $gameModel;
@@ -31,6 +31,13 @@ class GameController
         }
     }
 
+    private function startNewGame(): void
+    {
+        $this->sessionModel->resetTriesCounter();
+        $this->gameModel->generateSecretNumber();
+        $this->gameModel->storeRandomNumber();
+    }
+
     private function checkIfUserWantToMakeAGuess(): void
     {
         if ($this->gameView->isMakeGuessButtonPressed()) {
@@ -38,26 +45,16 @@ class GameController
         }
     }
 
+    private function checkIfMatch(): void
+    {
+        $this->gameModel->checkIfMatch($this->gameView->getGuessedNumber());
+        $this->sessionModel->addTriesToCounterSession();
+    }
 
     private function checkIfUserWantToSaveHighScore(): void
     {
         if ($this->gameView->isAddToHighScoreButtonPressed()) {
             $this->highScoreModel->addHighScoreToDatabase($this->sessionModel->getSessionUsername(), $this->sessionModel->getNumberOfTries());
-            $this->highScoreModel->getHighScore();
         }
-    }
-
-
-    private function startNewGame(): void
-    {
-        $this->sessionModel->cleanTriesCounter();
-        $this->gameModel->generateRandomNumber();
-        $this->gameModel->storeRandomNumber();
-    }
-
-    private function checkIfMatch(): void
-    {
-        $this->gameModel->checkIfMatch($this->gameView->getGuessedNumber());
-        $this->sessionModel->addTriesToCounterSession();
     }
 }

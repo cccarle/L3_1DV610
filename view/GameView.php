@@ -4,13 +4,12 @@ namespace view;
 
 class GameView
 {
-    private static $makeGuessButton = 'GameView::makeGuessButton';
     private static $startGameButton = 'GameView::startGameButton';
+    private static $makeGuessButton = 'GameView::makeGuessButton';
     private static $playAgainButton = 'GameView::playAgainButton';
     private static $goBackButton = 'GameView::goBackButton';
     private static $showHighScoreButton = 'GameView::showHighScoreButton';
     private static $addToHighScoreButton = 'GameView::addToHighScoreButton';
-
     private static $guessedNumber = 'GameView::guessedNumber';
 
     private const NUMBER_HIGHER_THEN_TWENTY = 20;
@@ -30,22 +29,19 @@ class GameView
     public function render(): string
     {
 
-        $message = $this->responseMessage();
-
         if ($this->isStartGameButtonPressed() || $this->isMakeGuessButtonPressed()) {
-            return $this->renderInputForm($message);
+            return $this->gameContainer();
         }
 
         if ($this->isShowHighScoreGameButtonPressed() || $this->isAddToHighScoreButtonPressed()) {
-            return $this->showHighScore();
+            return $this->showHighScoreHTML();
         }
 
         return $this->renderGameDescription();
     }
 
-    private function responseMessage(): string
+    private function showResponseMessage(): string
     {
-
         $message = '';
 
         if ($this->isMakeGuessButtonPressed()) {
@@ -65,51 +61,48 @@ class GameView
                 $message = 'You guessed right on ' . $this->sessionModel->getNumberOfTries() . ' tries';
             }
         }
+
         return $message;
     }
 
     public function renderGameDescription(): string
     {
         return '
-        <div class="container py-5 mt-5">
-            <form method="POST" class="form">
+            <form method="POST">
                 <h1 class="display-4 font-weight-bold">Welcome To "Guess The Number" Game</h1>
                 <p class="lead">Try to guess the number on least amount of tries.</p>
                 <p>Click on the button below to start a new game.</p>
                 <input type="submit" class="btn btn-info" name="' . self::$startGameButton . '" value="start game">
                 <input type="submit" class="btn btn-info" name="' . self::$showHighScoreButton . '" value="show high score" />
-
             </form>
-    </div>
         ';
     }
 
-    private function renderInputForm($message): string
-    {
-        return '' . $this->gameContainer($message) . '';
-    }
-
-    private function gameContainer($message): string
+    private function gameContainer(): string
     {
         if ($this->gameModel->isMatch()) {
-
-            return '
-
-    <form method="POST" class="form">
-        <h1> Congratulation </h1>
-        <p>' . $message . '</p>
-        <input type="submit" class="btn btn-info" name="' . self::$playAgainButton . '" value="Play Again" />
-        <input type="submit" class="btn btn-info" name="' . self::$addToHighScoreButton . '" value="Add to highscore" />
-    </form>
-
-    ';
-
+            return $this->generateUserGuessedRightHTML();
         } else {
+            return $this->generateInputFormHTML();
+        }
+    }
 
-            return '
-    <div class="container py-5 mt-5 col-12">
-        <form method="POST" class="form">
+    private function generateUserGuessedRightHTML()
+    {
+        return '
+        <form method="POST">
+            <h1> Congratulation </h1>
+            <p>' . $this->showResponseMessage() . '</p>
+            <input type="submit" class="btn btn-info" name="' . self::$playAgainButton . '" value="Play Again" />
+            <input type="submit" class="btn btn-info" name="' . self::$addToHighScoreButton . '" value="Add to highscore" />
+        </form>
+        ';
+    }
 
+    private function generateInputFormHTML()
+    {
+        return '
+        <form method="POST">
             <div class="form-group">
                 <p type="text" class="display-4" id="">Enter a number between 1-20 </p>
             </div>
@@ -118,22 +111,19 @@ class GameView
                 <input type="text" name="' . self::$guessedNumber . '" id="' . self::$guessedNumber . '" autocomplete="off">
             </div>
 
-            <p>' . $message . '</p>
+            <p>' . $this->showResponseMessage() . '</p>
 
             <input type="submit" class="btn btn-info" name="' . self::$makeGuessButton . '" value="Make a guess" />
             <input type="submit" class="btn btn-info" name="' . self::$goBackButton . '" value="Go to Start" />
-
         </form>
-    </div>
     ';
-        }
     }
 
-    private function showHighScore(): string
+    private function showHighScoreHTML(): string
     {
         $row = '';
 
-        foreach ($this->highScoreModel->getHighScore() as $highScoreRow) {
+        foreach ($this->highScoreModel->getTop10HighScore() as $highScoreRow) {
             $row .= "$highScoreRow <br>";
         }
 

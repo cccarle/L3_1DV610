@@ -21,7 +21,7 @@ class MainController
         $this->gameController = $gameController;
     }
 
-    public function render()
+    public function render() :void
     {
         $this->loginController->initialize();
         $this->registerController->initialize();

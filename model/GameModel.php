@@ -4,12 +4,10 @@ namespace model;
 
 class GameModel
 {
-    private static $randomNumber = "gameModel::0";
-
-    private $isMatch;
-    private $numberToLow;
-    private $numberToHigh;
-    private $numberOfTries;
+    private $secretNumber;
+    private $isMatch = false;
+    private $numberToLow = false;
+    private $numberToHigh = false;
 
     private $sessionModel;
 
@@ -18,42 +16,42 @@ class GameModel
         $this->sessionModel = $sessionModel;
     }
 
-    public function generateRandomNumber()
+    public function generateSecretNumber(): void
     {
-        self::$randomNumber = rand(0, 20);
+        $this->secretNumber = rand(0, 20);
     }
 
-    public function storeRandomNumber()
+    public function storeRandomNumber(): void
     {
-        $this->sessionModel->setMagicNumberSession(self::$randomNumber);
+        $this->sessionModel->setSecretNumberSession($this->secretNumber);
     }
 
-    public function checkIfMatch($guessedNumber)
+    public function checkIfMatch($guessedNumber): void
     {
-        if ($this->sessionModel->getMagicNumber() == $guessedNumber) {
+        if ($this->sessionModel->getSecretNumber() == $guessedNumber) {
             $this->isMatch = true;
         }
 
-        if ($guessedNumber > $this->sessionModel->getMagicNumber()) {
+        if ($guessedNumber > $this->sessionModel->getSecretNumber()) {
             $this->numberToHigh = true;
         }
 
-        if ($guessedNumber < $this->sessionModel->getMagicNumber()) {
+        if ($guessedNumber < $this->sessionModel->getSecretNumber()) {
             $this->numberToLow = true;
         }
     }
 
-    public function isMatch()
+    public function isMatch(): bool
     {
         return $this->isMatch;
     }
 
-    public function numberWasToHigh()
+    public function numberWasToHigh(): bool
     {
         return $this->numberToHigh;
     }
 
-    public function numberWasToLow()
+    public function numberWasToLow(): bool
     {
         return $this->numberToLow;
     }

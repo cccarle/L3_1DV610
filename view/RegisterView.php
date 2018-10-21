@@ -24,18 +24,16 @@ class RegisterView
 
     public function renderRegisterView(): string
     {
-        $message = $this->showResponseMessage();
-
-        return $this->generateRegisterFormHTML($message);
+        return $this->generateRegisterFormHTML();
     }
 
-    private function generateRegisterFormHTML($message): string
+    private function generateRegisterFormHTML(): string
     {
         return '
         <form method="post"  >
         <fieldset>
             <legend>Register a new user - Enter Username and password</legend>
-            <p id="' . self::$messageId . '">' . $message . '</p>
+            <p id="' . self::$messageId . '">' . $this->showResponseMessage() . '</p>
             <label for="' . self::$name . '">Username :</label>
             <input type="text" name="' . self::$name . '"  id="' . self::$name . '" value="' . $this->getUserName() . '" />
             <label for="' . self::$password . '">Password :</label>
@@ -69,8 +67,6 @@ class RegisterView
             if (!$this->registerModel->isRegistrationSuccess() && $this->registerModel->isUsernameTaken()) {
                 $message .= 'User exists, pick another username. <br>';
             }
-        } else {
-            return $message = '';
         }
 
         return $message;

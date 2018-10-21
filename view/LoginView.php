@@ -25,32 +25,31 @@ class LoginView
 
     public function renderLoginView(): string
     {
-        $message = $this->showResponseMessage();
 
         if ($this->sessionModel->checkIfLoggedIn()) {
-            return $this->generateLogoutButtonHTML($message);
+            return $this->generateLogoutButtonHTML();
         } else {
-            return $this->generateLoginFormHTML($message);
+            return $this->generateLoginFormHTML();
         }
     }
 
-    private function generateLogoutButtonHTML($message)
+    private function generateLogoutButtonHTML(): string
     {
         return '
 			<form method="post" >
-				<p id="' . self::$messageId . '">' . $message . '</p>
+				<p id="' . self::$messageId . '">' . $this->showResponseMessage() . '</p>
 				<input type="submit" name="' . self::$logout . '" value="logout"/>
 			</form>
 		';
     }
 
-    private function generateLoginFormHTML($message)
+    private function generateLoginFormHTML(): string
     {
         return '
         <form method="post" >
         <fieldset>
             <legend>Login - Enter Username and password</legend>
-            <p id="' . self::$messageId . '">' . $message . '</p>
+            <p id="' . self::$messageId . '">' . $this->showResponseMessage() . '</p>
             <label for="' . self::$name . '">Username :</label>
             <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getRequestUserName() . '" />
             <label for="' . self::$password . '">Password :</label>
@@ -63,7 +62,7 @@ class LoginView
 		';
     }
 
-    private function showResponseMessage()
+    private function showResponseMessage(): string
     {
         $message = '';
 
@@ -90,8 +89,7 @@ class LoginView
         return $message;
     }
 
-    
-    public function isLogOutButtonPressed()
+    public function isLogOutButtonPressed(): bool
     {
         return isset($_POST[self::$logout]);
     }

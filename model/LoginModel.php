@@ -12,7 +12,7 @@ class LoginModel
         $this->database = $database;
     }
 
-    public function login($username, $password)
+    public function login($username, $password): void
     {
         if ($this->isUsernameInDatabase($username) && $this->isHashedPasswordMatchWithPasswordInput($password)) {
 
@@ -28,20 +28,20 @@ class LoginModel
     private function isUsernameInDatabase($username): bool
     {
         $this->database->query('SELECT * FROM users WHERE user_username = :user_username');
-        $this->database->bind(':user_username', $username);
+        $this->database->bindValues(':user_username', $username);
         $this->getRowInDatabase();
 
         return $this->database->rowCount() > 0;
     }
 
-    private function isHashedPasswordMatchWithPasswordInput($password)
+    private function isHashedPasswordMatchWithPasswordInput($password) : bool
     {
         return password_verify($password, $this->getRowInDatabase()->user_password);
     }
 
     private function getRowInDatabase()
     {
-        return $row = $this->database->single();
+        return $row = $this->database->getSingleRecord();
     }
 
     public function checkIfLoginSuccess()

@@ -29,21 +29,21 @@ class DatabaseModel
 
         try {
             $this->databaseHandler = new PDO($this->dsn, $this->config->dbUsername(), $this->config->dbPassword(), $options);
-        } catch (PDOExeption $error) {
-            $this->error = $error->getMessage();
+        } catch (PDOException $e) {
+            $this->error = $e->getMessage();
             echo $this->error;
         }
     }
 
-    // Prepare statement with query
-    public function query($sql)
+    // Query Prepare statement with query
+    public function query($sql): void
     {
         $this->statement = $this->databaseHandler->prepare($sql);
     }
 
     // Bind values & check which type is passed in
     // http://php.net/manual/en/pdostatement.bindvalue.php
-    public function bind($param, $value, $type = null)
+    public function bindValues($param, $value, $type = null): void
     {
         if (is_null($type)) {
             switch (true) {
@@ -64,28 +64,24 @@ class DatabaseModel
         $this->statement->bindValue($param, $value, $type);
     }
 
-    // Execute the prepared statment
     public function execute(): bool
     {
         return $this->statement->execute();
     }
 
-    // Get result set as array of objects
-    public function resultSet()
+    public function resultSet(): array
     {
         $this->execute();
         return $this->statement->fetchAll(PDO::FETCH_OBJ);
     }
 
-    // Get single record as object
-    public function single()
+    public function getSingleRecord()
     {
         $this->execute();
 
         return $this->statement->fetch(PDO::FETCH_OBJ);
     }
 
-    // Get row count
     public function rowCount()
     {
         return $this->statement->rowCount();

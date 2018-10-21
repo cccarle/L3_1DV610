@@ -19,7 +19,9 @@ class RegisterModel
             $this->isUsernameTaken = true;
             $this->wasregSuccesFull = false;
         } else {
+
             $this->registerNewUser($username, $password);
+
         }
     }
 
@@ -27,17 +29,17 @@ class RegisterModel
     {
         $password = password_hash($password, PASSWORD_BCRYPT);
         $this->database->query('INSERT INTO users(user_username,user_password) VALUES(:user_username,:user_password)');
-        $this->database->bind(':user_username', $username);
-        $this->database->bind(':user_password', $password);
+        $this->database->bindValues(':user_username', $username);
+        $this->database->bindValues(':user_password', $password);
         $this->database->execute();
-        $this->wasregSuccesFull = false;
+        $this->wasregSuccesFull = true;
     }
 
     private function isUsernameAvailable($username): bool
     {
         $this->database->query('SELECT * FROM users WHERE user_username = :user_username');
-        $this->database->bind(':user_username', $username);
-        $row = $this->database->single();
+        $this->database->bindValues(':user_username', $username);
+        $row = $this->database->getSingleRecord();
 
         return $this->database->rowCount() > 0;
     }

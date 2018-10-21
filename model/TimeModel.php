@@ -3,7 +3,7 @@ namespace model;
 
 class TimeModel
 {
-    public function getTime()
+    public function getTime() : string
     {
 
         date_default_timezone_set('Europe/Stockholm');

@@ -13,6 +13,10 @@ A course for better understanding of code quality
 
   * login/register module 
 
+### Executable version
+
+* https://ce222qw-1dv610.000webhostapp.com/?
+
 
 ### Software Architecture
  - MVC
@@ -141,10 +145,10 @@ Overall im am happy with the outcome.
 # 5. Manual tests
 ### Use case tested : Use case 1 - User want to start a new game
 #### Test Case 1.1 - Start a game
-Test steps :
-1.1 User enter correct user credentails and is logged in.
-1.2 User will be shown a description of the game & a “start game” button.
-1.3 User click on "start game" button.
+__Test steps :__ <br>
+1.1 User enter correct user credentails and is logged in. <br>
+1.2 User will be shown a description of the game & a “start game” button. <br>
+1.3 User click on "start game" button. <br>
 
 __Exptected result :__  input field with a “make a guess” button is shown. <br>
 __Actuall result :__ input field with a “make a guess” button is shown. <br>
@@ -154,36 +158,36 @@ __Pass/fail :__ Pass <br>
 
 ### Use case tested : Use case 2 - User want to make a guess
 #### Test Case 2.1 - User make a guess without enter any value
-Test steps :
-1.1 User is logged in & has started a new game.
-2.2 User click on "make a guess" button without enter any value to the input-field.
+__Test steps :__ <br>
+1.1 User is logged in & has started a new game. <br>
+2.2 User click on "make a guess" button without enter any value to the input-field. <br>
 
 __Exptected result :__ System provide a message to the user "no number was entered". <br>
-Actuall result : System provide a message to the user "no number was entered". <br>
+__Actuall result :__ System provide a message to the user "no number was entered". <br>
 __Pass/fail :__ Pass <br>
 
 #### Test Case 2.2 - User enters invalid characters
-Test steps :
-1. User is logged in & has started a new game.
-2. User enter a character that is not a numeric value & click on "make a guess" button.
+__Test steps :__ <br>
+1. User is logged in & has started a new game. <br>
+2. User enter a character that is not a numeric value & click on "make a guess" button. <br>
 
 __Exptected result :__ System provide a message to the user "Only numbers allowed". <br>
 Actuall result : System provide a message to the user "Only numbers allowed". <br>
 __Pass/fail :__ Pass <br>
 
 #### Test Case 2.3 - User enters a to high number
-Test steps :
-1. User is logged in & has started a new game.
-2. User enter a number higher than 20 & click on "make a guess" button.
+__Test steps :__ <br>
+1. User is logged in & has started a new game. <br>
+2. User enter a number higher than 20 & click on "make a guess" button. <br>
 
-__Exptected result :__ System provide a message to the user "The number is higher then 20, only numbers between 1-20 is allowed".
+__Exptected result :__ System provide a message to the user "The number is higher then 20, only numbers between 1-20 is allowed". <br>
 __Actuall result :__ System provide a message to the user "The number is higher then 20, only numbers between 1-20 is allowed". <br>
 __Pass/fail :__ Pass <br>
 
 #### Test Case 2.4 - User enters a to low number
-Test steps :
-1. User is logged in & has started a new game.
-2. User enter a number lower than 1 & click on "make a guess" button.
+__Test steps__ : <br>
+1. User is logged in & has started a new game. <br>
+2. User enter a number lower than 1 & click on "make a guess" button. <br>
 
 __Exptected result :__  System provide a message to the user "The number is lower then 1, only numbers between 1-20 is allowed". <br>
 __Actuall result :__  System provide a message to the user "The number is lower then 1, only numbers between 1-20 is allowed". <br>
@@ -191,10 +195,10 @@ __Pass/fail :__ Pass <br>
 
 ### Use case tested : Use case 3 -  User guesses the secret number
 #### Test Case 3.1 - User guesses the secret number
-Test steps :
-1. User is logged in & has started a new game.
-2. User click on "make a guess" button.
-3. User has guessed the correct secret number.
+__Test steps :__ <br>
+1. User is logged in & has started a new game. <br>
+2. User click on "make a guess" button. <br>
+3. User has guessed the correct secret number. <br>
 
 __Exptected result :__ the system provide a message to the user “You guessed right on “x-amount” of tries”. <br>
 __Actuall result :__ the system provide a message to the user “You guessed right on “x-amount” of tries”. <br>
@@ -202,9 +206,9 @@ __Pass/fail :__ Pass <br>
 
 ### Use case tested : Use case 4 - User want to play again
 #### Test Case 4.1 - User has won and want to play again
-Test steps :
-1.1 User has won and is shown a "play again" button & a "add to high score" button.
-2.2 User click on "play again" button.
+__Test steps :__ <br>
+1.1 User has won and is shown a "play again" button & a "add to high score" button. <br>
+2.2 User click on "play again" button. <br>
 
 __Exptected result :__ System redirect to start page and show a description of the game & a “start game” button. <br>
 __Actuall result :__ System redirect to start page and show a description of the game & a “start game” button. <br>
@@ -212,11 +216,11 @@ __Pass/fail :__ Pass <br>
 
 ### Use case tested : Use case 5 - User want to save their attemps of trys in a high score
 #### Test Case 5.1 - User want to save their attemps of trys in a high score
-Test steps :
-1.1 User has won and is shown a "play again" button & a "add to high score" button.
-2.2 User click on "add to high score" button.
+__Test steps :__ <br>
+1.1 User has won and is shown a "play again" button & a "add to high score" button. <br>
+2.2 User click on "add to high score" button. <br>
 
-__Exptected result :__ System redirect to highscore page and the users result is added to the highscore.
-__Actuall result :__ System redirect to highscore page and the users result is added to the highscore.
+__Exptected result :__ System redirect to highscore page and the users result is added to the highscore. <br>
+__Actuall result :__ System redirect to highscore page and the users result is added to the highscore. <br>
 __Pass/fail :__ Pass <br>
 

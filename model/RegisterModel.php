@@ -18,6 +18,7 @@ class RegisterModel
         if ($this->isUsernameAvailable($username)) {
             $this->isUsernameTaken = true;
             $this->wasregSuccesFull = false;
+
         } else {
 
             $this->registerNewUser($username, $password);
@@ -41,7 +42,7 @@ class RegisterModel
         $this->database->bindValues(':user_username', $username);
         $row = $this->database->getSingleRecord();
 
-        return $this->database->rowCount() > 0;
+        return $this->database->rowCount();
     }
 
     public function isRegistrationSuccess()

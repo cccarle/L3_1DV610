@@ -22,14 +22,13 @@ class HighScoreModel
     public function getTop10HighScore(): array
     {
         $this->database->query('SELECT * FROM highScore ORDER by score ASC, ts ASC LIMIT 10');
-        $highScore = $this->database->resultSet();
-        $rowInDb = array();
+        $highScoreListFromDatabase = $this->database->resultSet();
+        $top10HighScoreArray = array();
 
-        foreach ($highScore as $value) {
-            $rows = "{$value->name} {$value->score}  {$value->ts}";
-            array_push($rowInDb, $rows);
+        foreach ($highScoreListFromDatabase as $highScoreValue) {
+            array_push($top10HighScoreArray, $highScoreValue);
         }
 
-        return $rowInDb;
+        return $top10HighScoreArray;
     }
 }

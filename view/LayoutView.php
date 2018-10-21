@@ -9,6 +9,7 @@ class LayoutView
     private $registerView;
     private $gameView;
     private $sessionModel;
+    private $dateTime;
 
     private $register_link = "register";
 
@@ -21,7 +22,7 @@ class LayoutView
         $this->sessionModel = $sessionModel;
     }
 
-    public function render()
+    public function renderLayoutHTML()
     {
         echo '<!DOCTYPE html>
         <html>
@@ -40,9 +41,12 @@ class LayoutView
 
         ' . $this->renderGameView() . '
 
+        <div>
         ' . $this->renderViews() . '
 
         ' . $this->dateTime->showTime() . '
+        </div>
+
         </body>
         </html>
     ';
@@ -53,16 +57,16 @@ class LayoutView
         if ($this->userWantToRegister()) {
             return '<a href="?">Back to login</a>';
         } elseif (!$this->sessionModel->checkIfLoggedIn()) {
-            return '<a href="/L3_1dv610/?' . $this->register_link . '">Register a new user</a>';
+            return '<a href="/?' . $this->register_link . '">Register a new user</a>';
         }
     }
 
     private function renderIsLoggedIn(): string
     {
         if ($this->sessionModel->checkIfLoggedIn()) {
-            return '<h2 >Logged in as : ' . $this->sessionModel->getSessionUsername() . '</h2>';
+            return '<h2>Logged in</h2>';
         } else {
-            return '<h2 >Not logged in</h2>';
+            return '<h2>Not logged in</h2>';
         }
     }
 

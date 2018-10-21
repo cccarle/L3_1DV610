@@ -35,14 +35,20 @@ class DatabaseModel
         }
     }
 
-    // Query Prepare statement with query
+    /*
+    Query Prepared statement with query
+     */
+
     public function query($sql): void
     {
         $this->statement = $this->databaseHandler->prepare($sql);
     }
 
-    // Bind values & check which type is passed in
-    // http://php.net/manual/en/pdostatement.bindvalue.php
+    /*
+    Bind values & check which type is passed in
+    http://php.net/manual/en/pdostatement.bindvalue.php
+     */
+
     public function bindValues($param, $value, $type = null): void
     {
         if (is_null($type)) {
@@ -64,10 +70,18 @@ class DatabaseModel
         $this->statement->bindValue($param, $value, $type);
     }
 
+    /*
+    Execute the prepared statement
+     */
+
     public function execute(): bool
     {
         return $this->statement->execute();
     }
+
+    /*
+    Get result as an array of objects
+     */
 
     public function resultSet(): array
     {
@@ -75,12 +89,20 @@ class DatabaseModel
         return $this->statement->fetchAll(PDO::FETCH_OBJ);
     }
 
+    /*
+    Get single record as object
+     */
+
     public function getSingleRecord()
     {
         $this->execute();
 
         return $this->statement->fetch(PDO::FETCH_OBJ);
     }
+
+    /*
+    Get row count
+     */
 
     public function rowCount()
     {

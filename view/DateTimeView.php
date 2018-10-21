@@ -11,7 +11,7 @@ class DateTimeView
         $this->timeModel = new \model\TimeModel();
     }
 
-    public function showTime() : string
+    public function showTime() 
     {
 
         $this->timeString = $this->timeModel->getTime();

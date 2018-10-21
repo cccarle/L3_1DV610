@@ -31,7 +31,7 @@ class LoginModel
         $this->database->bindValues(':user_username', $username);
         $this->getRowInDatabase();
 
-        return $this->database->rowCount() > 0;
+        return $this->database->rowCount();
     }
 
     private function isHashedPasswordMatchWithPasswordInput($password) : bool

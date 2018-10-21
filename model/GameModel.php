@@ -9,6 +9,9 @@ class GameModel
     private $numberToLow = false;
     private $numberToHigh = false;
 
+    private const LOWEST_NUMBER_EQUAL_TO_ONE = 1;
+    private const HIGEST_NUMBER_EQUAL_TO_TWENTY = 20;
+
     private $sessionModel;
 
     public function __construct($sessionModel)
@@ -18,7 +21,7 @@ class GameModel
 
     public function generateSecretNumber(): void
     {
-        $this->secretNumber = rand(0, 20);
+        $this->secretNumber = rand(self::LOWEST_NUMBER_EQUAL_TO_ONE, self::HIGEST_NUMBER_EQUAL_TO_TWENTY);
     }
 
     public function storeRandomNumber(): void

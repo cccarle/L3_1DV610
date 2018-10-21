@@ -27,6 +27,6 @@ class MainController
         $this->registerController->initialize();
         $this->gameController->initialize();
         
-        $this->layoutView->render();
+        $this->layoutView->renderLayoutHTML();
     }
 }

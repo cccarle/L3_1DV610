@@ -24,7 +24,7 @@ A course for better understanding of code quality
 
 <hr> 
 
-# Installation
+# 1. Installation
 
 ###### 1.Clone the repo
 
@@ -72,14 +72,14 @@ CREATE TABLE `highScore` (
 
 <hr>
 
-# Additional Requirements
+# 2. Additional Requirements
 * If the user is logged in a small game based on guessing a secret number will be available.
 * User can choose to add their score in a high score
 * User can view high score list.
 
 <hr>
 
-# Status
+# 3. Status
 The application fulfills all the additional use cases, but has a bug first time a user want to make a guess and the "addTriesToCounterSession()" is called. It do not effect the application but shows a "Notice" message of the bug. 
 
 #### Todos
@@ -100,7 +100,7 @@ Overall im am happy with the outcome.
 
 <hr>
 
-# Use cases
+# 4. Use cases
 
 #### Use case 1 - User want to start a new game
 1. If user is logged in the user will be shown a description of the game & a "start game" button.
@@ -138,83 +138,85 @@ Overall im am happy with the outcome.
 
 <hr>
 
-# Manual tests
-##### Use case tested : Use case 1 - User want to start a new game
-###### Test Case 1.1 - Start a game
+# 5. Manual tests
+### Use case tested : Use case 1 - User want to start a new game
+#### Test Case 1.1 - Start a game
 Test steps :
 1.1 User enter correct user credentails and is logged in.
 1.2 User will be shown a description of the game & a “start game” button.
 1.3 User click on "start game" button.
 
-Exptected result : input field with a “make a guess” button is shown.
-Actuall result : input field with a “make a guess” button is shown.
-Pass/fail : Pass
+__Exptected result :__  input field with a “make a guess” button is shown. <br>
+__Actuall result :__ input field with a “make a guess” button is shown. <br>
+__Pass/fail :__ Pass <br>
 
-##### Use case tested : Use case 2 - User want to make a guess
-###### Test Case 2.1 - User make a guess without enter any value
+
+
+### Use case tested : Use case 2 - User want to make a guess
+#### Test Case 2.1 - User make a guess without enter any value
 Test steps :
 1.1 User is logged in & has started a new game.
 2.2 User click on "make a guess" button without enter any value to the input-field.
 
-Exptected result : System provide a message to the user "no number was entered".
-Actuall result : System provide a message to the user "no number was entered".
-Pass/fail : Pass
+__Exptected result :__ System provide a message to the user "no number was entered". <br>
+Actuall result : System provide a message to the user "no number was entered". <br>
+__Pass/fail :__ Pass <br>
 
-###### Test Case 2.2 - User enters invalid characters
+#### Test Case 2.2 - User enters invalid characters
 Test steps :
 1. User is logged in & has started a new game.
 2. User enter a character that is not a numeric value & click on "make a guess" button.
 
-Exptected result : System provide a message to the user "Only numbers allowed".
-Actuall result : System provide a message to the user "Only numbers allowed".
-Pass/fail : Pass
+__Exptected result :__ System provide a message to the user "Only numbers allowed". <br>
+Actuall result : System provide a message to the user "Only numbers allowed". <br>
+__Pass/fail :__ Pass <br>
 
-###### Test Case 2.3 - User enters a to high number
+#### Test Case 2.3 - User enters a to high number
 Test steps :
 1. User is logged in & has started a new game.
 2. User enter a number higher than 20 & click on "make a guess" button.
 
-Exptected result : System provide a message to the user "The number is higher then 20, only numbers between 1-20 is allowed".
-Actuall result : System provide a message to the user "The number is higher then 20, only numbers between 1-20 is allowed".
-Pass/fail : Pass
+__Exptected result :__ System provide a message to the user "The number is higher then 20, only numbers between 1-20 is allowed".
+__Actuall result :__ System provide a message to the user "The number is higher then 20, only numbers between 1-20 is allowed". <br>
+__Pass/fail :__ Pass <br>
 
-###### Test Case 2.4 - User enters a to low number
+#### Test Case 2.4 - User enters a to low number
 Test steps :
 1. User is logged in & has started a new game.
 2. User enter a number lower than 1 & click on "make a guess" button.
 
-Exptected result :  System provide a message to the user "The number is lower then 1, only numbers between 1-20 is allowed".
-Actuall result :  System provide a message to the user "The number is lower then 1, only numbers between 1-20 is allowed".
-Pass/fail : Pass
+__Exptected result :__  System provide a message to the user "The number is lower then 1, only numbers between 1-20 is allowed". <br>
+__Actuall result :__  System provide a message to the user "The number is lower then 1, only numbers between 1-20 is allowed". <br>
+__Pass/fail :__ Pass <br>
 
-##### Use case tested : Use case 3 -  User guesses the secret number
-###### Test Case 3.1 - User guesses the secret number
+### Use case tested : Use case 3 -  User guesses the secret number
+#### Test Case 3.1 - User guesses the secret number
 Test steps :
 1. User is logged in & has started a new game.
 2. User click on "make a guess" button.
 3. User has guessed the correct secret number.
 
-Exptected result : the system provide a message to the user “You guessed right on “x-amount” of tries”.
-Actuall result : the system provide a message to the user “You guessed right on “x-amount” of tries”.
-Pass/fail : Pass
+__Exptected result :__ the system provide a message to the user “You guessed right on “x-amount” of tries”. <br>
+__Actuall result :__ the system provide a message to the user “You guessed right on “x-amount” of tries”. <br>
+__Pass/fail :__ Pass <br>
 
-##### Use case tested : Use case 4 - User want to play again
-###### Test Case 4.1 - User has won and want to play again
+### Use case tested : Use case 4 - User want to play again
+#### Test Case 4.1 - User has won and want to play again
 Test steps :
 1.1 User has won and is shown a "play again" button & a "add to high score" button.
 2.2 User click on "play again" button.
 
-Exptected result : System redirect to start page and show a description of the game & a “start game” button.
-Actuall result : System redirect to start page and show a description of the game & a “start game” button.
-Pass/fail : Pass
+__Exptected result :__ System redirect to start page and show a description of the game & a “start game” button. <br>
+__Actuall result :__ System redirect to start page and show a description of the game & a “start game” button. <br>
+__Pass/fail :__ Pass <br>
 
-##### Use case tested : Use case 5 - User want to save their attemps of trys in a high score
-###### Test Case 5.1 - User want to save their attemps of trys in a high score
+### Use case tested : Use case 5 - User want to save their attemps of trys in a high score
+#### Test Case 5.1 - User want to save their attemps of trys in a high score
 Test steps :
 1.1 User has won and is shown a "play again" button & a "add to high score" button.
 2.2 User click on "add to high score" button.
 
-Exptected result : System redirect to highscore page and the users result is added to the highscore.
-Actuall result : System redirect to highscore page and the users result is added to the highscore.
-Pass/fail : Pass
+__Exptected result :__ System redirect to highscore page and the users result is added to the highscore.
+__Actuall result :__ System redirect to highscore page and the users result is added to the highscore.
+__Pass/fail :__ Pass <br>
 
